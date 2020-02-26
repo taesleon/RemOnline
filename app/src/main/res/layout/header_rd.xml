@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/marginLeftFragment">
+
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/groupName"
+        android:text="description"
+        android:textSize="@dimen/textSizeSmall"
+        android:textColor="@color/white"
+        android:layout_marginRight="10dp"
+         />
+
+    <TextView
+        android:id="@+id/date"
+        android:textSize="@dimen/textSizeSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="data"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/groupName"
+        android:textSize="@dimen/textSizeSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/date"
+        android:layout_marginRight="10dp"
+        android:text="number"
+        android:textColor="@color/white" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/none_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_credit_card"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:text="bank"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_cash_usd"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:text="cash"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSizeNormal" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearLayout"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+
+            android:drawableLeft="@drawable/ic_cash_multiple"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="0dp"
+            android:paddingRight="15dp"
+            android:text="sum"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSizeSuper">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/prefix"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:textAllCaps="true"
+            android:background="#00C853"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="5dp"
+            android:text="D"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSizeNormal"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" />
+
+        <TextView
+            android:id="@+id/discount"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/prefix"
+            android:background="@drawable/rounded_coroners_discount"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSizeNormal"
+            android:visibility="invisible" />
+    </RelativeLayout>
+</RelativeLayout>

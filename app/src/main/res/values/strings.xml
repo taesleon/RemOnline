@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">мой склад</string>
+    <string name="day">сегодня</string>
+    <string name="week">неделя</string>
+    <string name="date_error">Ошибка выбора даты</string>
+    <string name="new_user_hint">аккаунт</string>
+    <string name="new_user_pass_hint">пароль</string>
+    <string name="new_user_dialog_title">НОВЫЙ ПОЛЬЗОВАТЕЛЬ</string>
+    <string name="password">password</string>
+    <string name="auth_error">ошибка авторизации !</string>
+    <string name="success">успешно</string>
+    <string name="service_error">ошибка сервиса</string>
+    <string name="please_wait">пожалуйста ожидайте</string>
+    <string name="title_agent">Контрагенты</string>
+    <string name="title_store">Склады</string>
+    <string name="title_retail_store">Точки продаж</string>
+    <string name="title_group">Товарные группы</string>
+    <string name="title_employee">Пользователи</string>
+    <string name="title_good">Товары</string>
+    <string name="title_retail_demand">Розница</string>
+    <string name="title_retail_return">Возвраты</string>
+    <string name="title_demand">Отгрузки</string>
+    <string name="action_settings">хер знает</string>
+    <item name="auth_error" type="id">ошибка авторизации !</item>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="unknown_error">неизвестная ошибка</string>
+    <string name="try_connect">попытка подключения</string>
+    <string name="unauthorized">ошибка авторизации</string>
+    <string name="check_connection">проверьте доступ к интернет</string>
+    <string name="service_unaviable">сервис временно недоступен</string>
+    <string name="service_closed">сервис временно отключен</string>
+    <string name="logout_dialog_title">Выход из учетной записи</string>
+    <string name="logout_dialog_content">Внимание, все данные\n будут уничтожены !</string>
+    <string name="filter_dialog_title">Установить фильтр</string>
+    <string name="total_help">
+        \n
+        Значения рассчитываются как разница между текущим годом и предыдущим. В расчете учитываются и розница и безнал.\n\n
+        Например, сегодня 03 февраля 2018, суббота.\n\n
+        День - диапазон дат \n03.02.18 - 03.02.18, \n04.02.17 - 04.02.17 (суббота).\n\n
+        Неделя - диапазон дат \n29.01.18 - 03.02.18, \n30.01.17 - 04.02.17 (пон - суб).\n\n
+        Месяц - диапазон дат \n01.02.18 - 03.02.18, \n01.02.17 - 03.02.17 (с начала месяца).\n\n
+        Год - диапазон дат \n01.01.18 - 03.02.18, \n01.01.17 - 03.02.17 (с начала года).\n
+    </string>
+    <string name="choose_color">Выберите цвет</string>
+    <string name="color_ok">Выбрать</string>
+    <string name="cancel">Отмена</string>
+    <string name="return_btn">Возврат</string>
+    <string name="title_stock">Обновление остатков</string>
+    <string name="developer_dialog_title">Связь с разработчиком</string>
+    <string name="developer_info">taesleon@gmail.com</string>
+</resources>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#607d8b</color>
+    <color name="colorPrimaryDark">#455a64</color>
+    <color name="colorAccent">#ff4081</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="dark">#555555</color>
+    <color name="alert">#F44336</color>
+    <color name="icon_dark">#555555</color>
+    <color name="icon_light">#FFFFFF</color>
+    <color name="dialog_positive_btn">#004D40</color>
+    <color name="transparent">#00000000</color>
+    <color name="indicator">#33000000</color>
+    <color name="material_blue_grey_80">#ff37474f</color>
+    <color name="indigo">#3F51B5</color>
+    <color name="fragment2">#0097A7</color>
+    <color name="fragment1">#00897B</color>
+    <color name="lib_title">#5C6BC0</color>
+
+    <array name="tabs_colors">
+        <item>#607d8b</item>
+        <item>#00897B</item>
+        <item>#0097A7</item>
+    </array>
+    <array name="color_array">
+        <item>#039BE5</item>
+        <item>#00E676</item>
+        <item>#e7536f</item>
+        <item>#7b4fc7</item>
+        <item>#CDDC39</item>
+        <item>#1E88E5</item>
+        <item>#D84315</item>
+        <item>#607D8B</item>
+        <item>#388E3C</item>
+        <item>#006064</item>
+        <item>#448AFF</item>
+        <item>#311B92</item>
+        <item>#C51162</item>
+        <item>#C62828</item>
+        <item>#AB47BC</item>
+        <item>#8f7c7c</item>
+        <item>#E91E63</item>
+        <item>#2196F3</item>
+        <item>#00897B</item>
+        <item>#20df82</item>
+        <item>#0ab7ec</item>
+        <item>#00C853</item>
+        <item>#FFEB3B</item>
+        <item>#76FF03</item>
+        <item>#FF3D00</item>
+        <item>#7acc23</item>
+        <item>#baf241</item>
+        <item>#ed9440</item>
+        <item>#7373da</item>
+        <item>#EF5350</item>
+        <item>#EF6C00</item>
+        <item>#E64A19</item>
+        <item>#827717</item>
+        <item>#388E3C</item>
+        <item>#757575</item>
+        <item>#06ce77</item>
+        <item>#E65100</item>
+        <item>#64DD17</item>
+        <item>#00E676</item>
+        <item>#3F51B5</item>
+        <item>#00BFA5</item>
+        <item>#7986CB</item>
+        <item>#AD1457</item>
+        <item>#00B8D4</item>
+        <item>#F06292</item>
+        <item>#795548</item>
+        <item>#fc8357</item>
+        <item>#607D8B</item>
+        <item>#03A9F4</item>
+        <item>#e44d33</item>
+        <item>#304FFE</item>
+    </array>
+
+
+</resources>

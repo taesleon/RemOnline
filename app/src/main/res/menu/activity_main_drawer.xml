@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="СПРАВОЧНИКИ"
+        android:menuCategory="container"
+        android:visible="true">
+        <menu>
+            <item
+                android:id="@+id/library_stores"
+                android:icon="@drawable/ic_basket"
+                android:title="Точки продаж"/>
+            <item
+                android:id="@+id/library_groups"
+                android:icon="@drawable/ic_folder"
+                android:title="Группы товаров"/>
+            <item
+                android:id="@+id/library_agents"
+                android:icon="@drawable/ic_account_multiple"
+                android:title="Контрагенты"/>
+            <item
+                android:id="@+id/library_goods"
+                android:icon="@drawable/ic_archive"
+                android:title="Товары"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/update"
+        android:title="ОБНОВЛЕНИЕ"
+        android:menuCategory="container"
+        android:visible="true">
+        <menu>
+            <item
+                android:id="@+id/update_doc"
+                android:icon="@drawable/ic_package_down"
+                android:title="Документы"/>
+            <item
+                android:id="@+id/update_lib"
+                android:icon="@drawable/ic_briefcase_download"
+                android:title="Справочники" />
+            <item
+                android:id="@+id/switchForService"
+                android:checkable="true"
+                android:icon="@drawable/ic_auto_upload"
+                android:title="Автообновление"
+                app:actionLayout="@layout/layout_switch_menu" />
+        </menu>
+    </item>
+    <item
+        android:title="РАЗРАБОТЧИК"
+        android:menuCategory="container"
+        android:visible="true">
+        <menu>
+            <item
+                android:id="@+id/developer"
+                android:icon="@drawable/ic_email"
+                android:title="Связь"/>
+        </menu>
+    </item>
+
+</menu>

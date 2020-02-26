@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--список сотрудников-->
+    <string name="employee">https://online.moysklad.ru/api/remap/1.1/entity/employee</string>
+    <!--список розничных продаж-->
+    <string name="retaildemand">https://online.moysklad.ru/api/remap/1.1/entity/retaildemand</string>
+    <!--список розничных возвратов-->
+    <string name="retailsalesreturn">https://online.moysklad.ru/api/remap/1.1/entity/retailsalesreturn</string>
+    <!--список отгрузок-->
+    <string name="demand">https://online.moysklad.ru/api/remap/1.1/entity/demand</string>
+    <!--список складов-->
+    <string name="store">https://online.moysklad.ru/api/remap/1.1/entity/store</string>
+    <!--справочник товаров (ассортимент)-->
+    <string name="assortment">https://online.moysklad.ru/api/remap/1.1/entity/assortment</string>
+    <!--список розничных точек-->
+    <string name="retailstore">https://online.moysklad.ru/api/remap/1.1/entity/retailstore</string>
+    <!--список контрагентов-->
+    <string name="counterparty">https://online.moysklad.ru/api/remap/1.1/entity/counterparty</string>
+    <!--список товарных групп-->
+    <string name="groupes">https://online.moysklad.ru/api/remap/1.1/entity/productfolder</string>
+
+
+</resources>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentRight="true"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingLeft="50dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_toLeftOf="@+id/stock"
+        android:minLines="2"
+        android:text="name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSizeSmall" />
+
+    <TextView
+        android:id="@+id/code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/name"
+        android:text="code"
+        android:textColor="@color/dark"
+        android:textSize="@dimen/textSizeSmall" />
+
+    <TextView
+        android:id="@+id/ref"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/code"
+        android:text="ref"
+        android:textColor="@color/dark"
+        android:textSize="@dimen/textSizeSmall" />
+
+    <TextView
+        android:id="@+id/sale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/name"
+        android:text="sale"
+        android:textColor="@color/dark"
+        android:textSize="@dimen/textSizeSmall" />
+
+    <TextView
+        android:id="@+id/buy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/sale"
+        android:text="buy"
+        android:textColor="@color/dark"
+        android:textSize="@dimen/textSizeSmall" />
+
+    <TextView
+        android:id="@+id/stock"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/stock_green"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="5"
+        android:textColor="@color/white" />
+</RelativeLayout>
