@@ -3,6 +3,7 @@ package com.cardamon.tofa.skladhelper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -25,6 +26,7 @@ import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cardamon.tofa.skladhelper.moysklad.AgentDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.BrokenRequest;
+import com.cardamon.tofa.skladhelper.moysklad.CachBoxDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.DemandDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.Downloader;
 import com.cardamon.tofa.skladhelper.moysklad.GoodDownloader;
@@ -34,15 +36,22 @@ import com.cardamon.tofa.skladhelper.moysklad.RetailDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.RetailStoreDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.ReturnDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.StoreDownloader;
+import com.cardamon.tofa.skladhelper.remonline.Token;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 
+import java.io.InputStream;
 
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BrokenRequest {
     //меню выбора дат
@@ -57,23 +66,32 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     public DateSetObserver fragmentJust;
     //слайдер фрагментов
     private ViewPager mViewPager;
-
+    private DbHelper db;
 
     protected void onCreate(Bundle savedInstanceState) {
         //для доступа из любого места приложения
         MyApplication.ACTIVITY = this;
-
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
-        //если нет авторизации, запускаем активность нового пользователя
+        //db = new DbHelper();
+        /*
+        if (db.checkOldDocs()) {
+            //this.addOldData();
+            //this.startActivity(new Intent(getApplicationContext(), NewUser.class));
+        }
+        */
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = mPrefs.edit();
+
+        //если нет авторизации, запускаем активность нового пользователя
+
+        /*
         if (mPrefs.getString("password", "").equals("")) {
             finish();
             startActivity(new Intent(this, NewUser.class));
         }
+        */
 
         //создаем фрагменты
         final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -193,6 +211,38 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         log_out.setOnClickListener(view -> logout());
     }
 
+    private void addOldData() {
+        try {
+            InputStream inputStream = getResources().openRawResource(R.raw.retail);
+            db.getWritableDatabase().execSQL(ActivityMain.convertStreamToString(inputStream));
+
+            inputStream = getResources().openRawResource(R.raw.rows);
+            db.getWritableDatabase().execSQL(ActivityMain.convertStreamToString(inputStream));
+
+            inputStream = getResources().openRawResource(R.raw.demand);
+            this.db.getWritableDatabase().execSQL(ActivityMain.convertStreamToString(inputStream));
+
+            inputStream = getResources().openRawResource(R.raw.demand_rows);
+            this.db.getWritableDatabase().execSQL(ActivityMain.convertStreamToString(inputStream));
+            return;
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return;
+        }
+    }
+
+    public static String convertStreamToString(InputStream inputStream) throws Exception {
+        String string2;
+        BufferedReader bufferedReader = new BufferedReader((Reader) new InputStreamReader(inputStream));
+        StringBuilder stringBuilder = new StringBuilder();
+        while ((string2 = bufferedReader.readLine()) != null) {
+            stringBuilder.append(string2);
+            stringBuilder.append("\n");
+        }
+        bufferedReader.close();
+        return stringBuilder.toString();
+    }
+
     /**
      * получить меню выбора даты
      *
@@ -218,18 +268,24 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        ExecutorService exService = Executors.newFixedThreadPool(1);
+        exService.execute(new Token());
+
         DbHelper db = new DbHelper();
         switch (item.getItemId()) {
             //обновить справочники
             case R.id.update_lib:
                 //удалить старые справочники
                 db.deleteLibs();
-                ExecutorService exService = Executors.newFixedThreadPool(1);
+/*
                 exService.execute(new GoodDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
                 exService.execute(new AgentDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
+                exService.execute(new CachBoxDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
+                /*
                 exService.execute(new StoreDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
                 exService.execute(new RetailStoreDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
                 exService.execute(new GroupDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
+                */
                 break;
             //обновить документы
             case R.id.update_doc:
@@ -241,7 +297,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                 exService.execute(new DemandDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
                 break;
             case R.id.library_groups:
-                    startActivity(new Intent(this, ActLibGroup.class));
+                startActivity(new Intent(this, ActLibGroup.class));
                 break;
             case R.id.library_agents:
                 startActivity(new Intent(this, ActLibAgent.class));

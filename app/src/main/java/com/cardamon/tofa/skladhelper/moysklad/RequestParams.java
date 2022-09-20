@@ -44,7 +44,6 @@ public class RequestParams {
     }
 
     /**
-     *
      * @param offset отступ, офсет
      */
     public void setOffset(int offset) {
@@ -52,7 +51,6 @@ public class RequestParams {
     }
 
     /**
-     *
      * @param dateFrom установка начальной даты
      */
     public void setDateFrom(long dateFrom) {
@@ -60,7 +58,6 @@ public class RequestParams {
     }
 
     /**
-     *
      * @param dateTo установка конечной даты
      */
     public void setDateTo(long dateTo) {
@@ -80,8 +77,8 @@ public class RequestParams {
     public void setRefreshInterval() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApplication.ACTIVITY);
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(prefs.getLong("lastUpdate", 946684740000l));
-        calendar.add(Calendar.DATE, - 3);
+        calendar.setTimeInMillis(prefs.getLong("lastUpdate", 1546293600000L));
+        calendar.add(Calendar.DATE, -MyApplication.UPDATE_PERIOD_DAYS);
         setDateFrom(calendar.getTimeInMillis());
         setDateTo(new Date().getTime());
     }
@@ -90,45 +87,78 @@ public class RequestParams {
      * установка интервала для загрузки всех документов
      */
     public void setAllInterval() {
-        setDateFrom(946684740000l);//31.12.1999
-        setDateTo(new Date().getTime());
+        this.setDateFrom(1655413201000L);
+        this.setDateTo(new Date().getTime());
     }
 
     /**
-     *
      * @return возврат готовой строки с параметрами
      */
     public String getParams() {
-        String params = "?";
-        if (limit != 0)
-            params += "limit=" + limit + "&";
-        if (offset != 0)
-            params += "offset=" + offset + "&";
-        if (dateFrom != 0 && dateTo != 0)
-            params += "filter=moment%3E" + convertLong(dateFrom) + ";moment%3C" + convertLong(dateTo) + "&";
-        if (extraParam != "")
-            params += extraParam;
-        return params;
+        int n = this.limit;
+        String result = "?";
+        if (n != 0) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(result);
+            stringBuilder.append("limit=");
+            stringBuilder.append(this.limit);
+            stringBuilder.append("&");
+            result = stringBuilder.toString();
+        }
+        if (this.offset != 0) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(result);
+            stringBuilder.append("page=");
+            stringBuilder.append(this.offset);
+            stringBuilder.append("&");
+            result = stringBuilder.toString();
+        }
+        if (this.dateFrom != 0L && this.dateTo != 0L) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(result);
+            stringBuilder.append("created_at[]=");
+            stringBuilder.append(this.dateFrom);
+            stringBuilder.append("&created_at[]=");
+            stringBuilder.append(this.dateTo);
+            stringBuilder.append("&");
+            result = stringBuilder.toString();
+        }
+        if (this.extraParam != "") {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(result);
+            stringBuilder.append(this.extraParam);
+            result = stringBuilder.toString();
+        }
+        return result;
     }
 
     /**
      * ковертация даты long в формат для http запроса
+     *
      * @param l дата в миллисекундах
      * @return отформатированная дата
      */
     public static String convertLong(long l) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
-        formatter.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(l);
-        return formatter.format(cal.getTime());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone((String) "Europe/Moscow"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(l);
+        return simpleDateFormat.format(calendar.getTime());
     }
 
-    public void clear(){
+    public void clear() {
         extraParam = "";
         limit = 0;
         offset = 0;
         dateFrom = 0;
         dateTo = 0;
+    }
+
+    public void setExtraParam(String str) {
+        extraParam += str;
+    }
+
+    public void clearExtraParam() {
+        this.extraParam = "";
     }
 }

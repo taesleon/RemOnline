@@ -11,6 +11,7 @@
     <string name="success">успешно</string>
     <string name="service_error">ошибка сервиса</string>
     <string name="please_wait">пожалуйста ожидайте</string>
+    <string name="title_cashbox">Кассы</string>
     <string name="title_agent">Контрагенты</string>
     <string name="title_store">Склады</string>
     <string name="title_retail_store">Точки продаж</string>

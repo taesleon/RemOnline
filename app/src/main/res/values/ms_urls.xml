@@ -11,13 +11,18 @@
     <!--список складов-->
     <string name="store">https://online.moysklad.ru/api/remap/1.1/entity/store</string>
     <!--справочник товаров (ассортимент)-->
-    <string name="assortment">https://online.moysklad.ru/api/remap/1.1/entity/assortment</string>
+    <string name="assortment">https://api.remonline.app/warehouse/goods/1808391</string>
     <!--список розничных точек-->
     <string name="retailstore">https://online.moysklad.ru/api/remap/1.1/entity/retailstore</string>
     <!--список контрагентов-->
-    <string name="counterparty">https://online.moysklad.ru/api/remap/1.1/entity/counterparty</string>
+    <string name="counterparty">https://api.remonline.app/clients/</string>
     <!--список товарных групп-->
     <string name="groupes">https://online.moysklad.ru/api/remap/1.1/entity/productfolder</string>
 
+    <!--список касс-->
+    <string name="cashbox">https://api.remonline.app/cashbox/</string>
+
+    <!-- token remonline-->
+    <string name="token_rem">"https://api.remonline.app/token/new"</string>
 
 </resources>

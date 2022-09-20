@@ -9,11 +9,13 @@ import android.net.Uri;
 import android.os.Vibrator;
 
 public class MyApplication extends Application {
-    public final static int MAX_THREAD = 20;
+    public final static int MAX_THREAD = 5;
     public static ActivityMain ACTIVITY;
     private static Context mContext;
     private static SQLiteDatabase sDataBase;
     public static int SHORT_VIBRATE = 100;
+    public static String TOKEN;
+    public static int UPDATE_PERIOD_DAYS = 7;
 
     public void onCreate() {
         super.onCreate();

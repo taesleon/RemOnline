@@ -1,6 +1,7 @@
 package com.cardamon.tofa.skladhelper.moysklad;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.cardamon.tofa.skladhelper.MyApplication;
 import com.cardamon.tofa.skladhelper.R;
@@ -14,15 +15,14 @@ import org.json.JSONObject;
  * парсим товары
  */
 public class GoodDownloader extends Downloader {
-    /** @see Downloader#Downloader(Activity, int, int) */
+    /**
+     * @see Downloader#Downloader(Activity, int, int)
+     */
     public GoodDownloader(Activity mActivity, int showDialogMsg, int insertMsg) {
         super(mActivity, showDialogMsg, insertMsg);
-        if(SHOW_DIALOG_MODE)
+        if (SHOW_DIALOG_MODE)
             mDialogTitle = mActivity.getResources().getString(R.string.title_good);
         mBaseUrl = MyApplication.ACTIVITY.getResources().getString(R.string.assortment);
-        mRequestParams.clear();
-        mRequestParams.setLimit(100);
-
     }
 
     /**
@@ -34,44 +34,21 @@ public class GoodDownloader extends Downloader {
     @Override
     protected synchronized void parseJson(JSONObject json) {
         try {
-            JSONArray rows = json.getJSONArray("rows");
+            JSONArray rows = json.getJSONArray("data");
             for (int i = 0; i < rows.length(); i++) {
                 String[] data = new String[7];
                 data[0] = rows.getJSONObject(i).getString("id");
-
-                if (rows.getJSONObject(i).has("name"))
-                    data[1] = rows.getJSONObject(i).getString("name");
-                else
-                    data[1] = "";
-                if (rows.getJSONObject(i).has("code"))
-                    data[2] = rows.getJSONObject(i).getString("code");
-                else
-                    data[2] = "";
-                if (rows.getJSONObject(i).has("article"))
-                    data[3] = rows.getJSONObject(i).getString("article");
-                else
-                    data[3] = "";
-
-                if (rows.getJSONObject(i).has("productFolder")) {
-                    String group = rows.getJSONObject(i).getJSONObject("productFolder").getJSONObject("meta").getString("href");
-                    group = group.replaceFirst("(.*)productfolder/", "");
-                    data[4] = group;
-                } else
-                    data[4] = "";//without group
-
-                String by_price = "0";
-                String sell_price = "0";
-                if (rows.getJSONObject(i).has("buyPrice"))
-                    by_price = rows.getJSONObject(i).getJSONObject("buyPrice").getString("value");
-                if (rows.getJSONObject(i).has("salePrices"))
-                    sell_price = rows.getJSONObject(i).getJSONArray("salePrices").getJSONObject(0).getString("value");
-                data[5] = sell_price;
-                data[6] = by_price;
-
+                data[1] = rows.getJSONObject(i).getString("title");
+                data[2] = rows.getJSONObject(i).getString("article");
+                data[3] = rows.getJSONObject(i).getString("code");
+                data[4] = rows.getJSONObject(i).getJSONObject("category").getString("id");
+                data[5] = rows.getJSONObject(i).getJSONObject("price").getString("270851");
+                data[6] = rows.getJSONObject(i).getJSONObject("price").getString("270852");
                 allRows.add(data);
                 mCount--;
                 publishProgress();
             }
+
 
         } catch (JSONException e) {
             e.printStackTrace();

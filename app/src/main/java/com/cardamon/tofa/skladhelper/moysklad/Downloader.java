@@ -1,5 +1,6 @@
 package com.cardamon.tofa.skladhelper.moysklad;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.cardamon.tofa.skladhelper.DbHelper;
 import com.cardamon.tofa.skladhelper.GetJson;
 import com.cardamon.tofa.skladhelper.MyApplication;
 import com.cardamon.tofa.skladhelper.R;
+import com.cardamon.tofa.skladhelper.remonline.Token;
 import com.github.johnpersano.supertoasts.library.Style;
 import com.github.johnpersano.supertoasts.library.SuperActivityToast;
 
@@ -112,7 +114,7 @@ public abstract class Downloader extends Thread implements JsonCatcher {
     Downloader(Activity activity, int showMode, int resultHandleMode) {
         mActivity = activity;
         mRequestParams = new RequestParams();
-        mRequestParams.setLimit(100);
+
 
         switch (showMode) {
             case SHOW_TOAST_MSG:
@@ -154,7 +156,7 @@ public abstract class Downloader extends Thread implements JsonCatcher {
         if (SHOW_DIALOG_MODE) {
             mHandler.sendEmptyMessage(SHOW_DIALOG_MSG);
         }
-
+        addTokenToRequest();
         new GetJson(mBaseUrl, this, mRequestParams).run();
 
         if (!STILL_MODE)
@@ -264,7 +266,7 @@ public abstract class Downloader extends Thread implements JsonCatcher {
 
     private void startAllThreads() {
         mExecutorService = Executors.newFixedThreadPool(MyApplication.MAX_THREAD);
-        for (int i = 100; i <= mCount; i += 100) {
+        for (int i = 2; i <= 1 + mCount / 50; ++i) {
             mRequestParams.setOffset(i);
             mExecutorService.execute(new GetJson(mBaseUrl, this, mRequestParams));
         }
@@ -297,7 +299,7 @@ public abstract class Downloader extends Thread implements JsonCatcher {
         //если не определено кол-во данных в запросе, записываем его
         if (mCount == -1) {
             try {
-                mCount = json.getJSONObject("meta").getInt("size");
+                mCount = json.getInt("count");
                 mAllRows = mCount;
                 startAllThreads();
 
@@ -379,6 +381,7 @@ public abstract class Downloader extends Thread implements JsonCatcher {
     /**
      * показать toast
      */
+    @SuppressLint("WrongConstant")
     private void showToast() {
         mToast = new SuperActivityToast(mActivity, Style.TYPE_PROGRESS_CIRCLE);
         mToast.setText(mActivity.getResources().getString(R.string.try_connect));
@@ -399,6 +402,7 @@ public abstract class Downloader extends Thread implements JsonCatcher {
     /**
      * показать toast успех
      */
+    @SuppressLint("WrongConstant")
     private void successToast() {
         dismissToast();
         mToast = new SuperActivityToast(mActivity, Style.green());
@@ -415,6 +419,7 @@ public abstract class Downloader extends Thread implements JsonCatcher {
      *
      * @param code код ответа сервера
      */
+    @SuppressLint("WrongConstant")
     private void errorToast(int code) {
         if (STILL_MODE)
             return;
@@ -514,5 +519,13 @@ public abstract class Downloader extends Thread implements JsonCatcher {
                     errorToast(msg.what);
             }
         }
+    }
+    protected void addTokenToRequest() {
+        RequestParams requestParams = this.mRequestParams;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("token=");
+        stringBuilder.append(Token.token);
+        stringBuilder.append("&");
+        requestParams.setExtraParam(stringBuilder.toString());
     }
 }

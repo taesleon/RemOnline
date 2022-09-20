@@ -209,15 +209,19 @@ public class Model {
         public static final String TABLE_NAME = "agent";
         public static final String UUID = "uuid";
         public static final String NAME = "name";
+        public static final String SUPPLIER = "supplier";
+
         public static final String CREATE_TABLE = "CREATE TABLE " + Agent.TABLE_NAME + " (" +
                 Agent._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 Agent.UUID + " TEXT, " +
-                Agent.NAME + " TEXT" +
+                Agent.NAME + " TEXT," +
+                Agent.SUPPLIER + " TEXT" +
                 ");";
         public static final String INSERT_ROW_STATEMENT = "INSERT INTO " + Agent.TABLE_NAME + " (" +
                 Agent.UUID + ", " +
-                Agent.NAME +
-                ") values(?, ?)";
+                Agent.NAME + ", " +
+                Agent.SUPPLIER +
+                ") values(?, ?, ?)";
     }
 
     public static class Store implements BaseColumns {
@@ -312,5 +316,26 @@ public class Model {
                 Good.SALE + ", " +
                 Good.BUY +
                 ") values(?, ?, ?, ?, ?, ?, ?)";
+    }
+
+    public static class Cashbox implements BaseColumns {
+        public static final String TABLE_NAME = "cashbox";
+        public static final String UUID = "uuid";
+        public static final String NAME = "name";
+        public static final String TYPE = "type";
+
+
+        public static final String CREATE_TABLE = "CREATE TABLE " + Cashbox.TABLE_NAME + " (" +
+                Cashbox._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                Cashbox.UUID + " TEXT, " +
+                Cashbox.NAME + " TEXT, " +
+                Cashbox.TYPE + " TEXT"+
+                ");";
+
+        public static final String INSERT_ROW_STATEMENT = "INSERT INTO " + Cashbox.TABLE_NAME + " (" +
+                Cashbox.UUID + ", " +
+                Cashbox.NAME + ", " +
+                Cashbox.TYPE+
+                ") values(?, ?, ?)";
     }
 }

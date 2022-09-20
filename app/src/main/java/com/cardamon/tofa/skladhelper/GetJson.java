@@ -42,6 +42,7 @@ public class GetJson implements Runnable {
             strUrl = baseUrl + params.getParams();
         try {
             mUrl = new URL(strUrl);
+            Log.d("mimi", mUrl.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -70,9 +71,11 @@ public class GetJson implements Runnable {
 
             conn = (HttpURLConnection) mUrl.openConnection();
             conn.setRequestMethod("GET");
+
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApplication.ACTIVITY);
-            conn.setRequestProperty("Authorization", prefs.getString("password", null));
+            //conn.setRequestProperty("Authorization", prefs.getString("password", null));
             conn.connect();
+
             switch (conn.getResponseCode()) {
                 case HttpURLConnection.HTTP_OK:
                     try (InputStream is = conn.getInputStream()) {

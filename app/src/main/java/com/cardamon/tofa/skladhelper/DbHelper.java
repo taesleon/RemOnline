@@ -29,6 +29,10 @@ public class DbHelper extends SQLiteOpenHelper {
         super(MyApplication.ACTIVITY.getApplicationContext(), "database", null, 1);
     }
 
+    public boolean checkOldDocs() {
+        return MyApplication.getSqlDataBase().rawQuery("SELECT uuid FROM retail", null).getCount() <= 0;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Model.Return.CREATE_TABLE);
@@ -44,6 +48,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(Model.User.CREATE_TABLE);
         db.execSQL(Model.RetailStore.CREATE_TABLE);
         db.execSQL(Model.Colors.CREATE_TABLE);
+        db.execSQL(Model.Cashbox.CREATE_TABLE);
     }
 
     @Override
@@ -417,6 +422,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE from retail_store", new String[]{});
         db.execSQL("DELETE from store", new String[]{});
         db.execSQL("DELETE from good", new String[]{});
+        db.execSQL("DELETE from cashbox", new String[]{});
         db.close();
     }
 

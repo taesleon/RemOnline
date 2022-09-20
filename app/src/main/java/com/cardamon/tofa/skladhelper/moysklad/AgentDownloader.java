@@ -22,8 +22,6 @@ public class AgentDownloader extends Downloader {
             mDialogTitle = mActivity.getResources().getString(R.string.title_agent);
         }
         mBaseUrl = MyApplication.ACTIVITY.getResources().getString(R.string.counterparty);
-        mRequestParams.clear();
-        mRequestParams.setLimit(100);
     }
 
     /**
@@ -34,12 +32,12 @@ public class AgentDownloader extends Downloader {
     @Override
     protected synchronized void parseJson(JSONObject json) {
         try {
-            JSONArray rows = json.getJSONArray("rows");
+            JSONArray rows = json.getJSONArray("data");
             for (int i = 0; i < rows.length(); i++) {
-                String[] data = new String[2];
+                String[] data = new String[3];
                 data[0] = rows.getJSONObject(i).getString("id");
-                String name = rows.getJSONObject(i).getString("name");
-                data[1] = name;
+                data[1] = rows.getJSONObject(i).getString("name");
+                data[2] = rows.getJSONObject(i).getString("supplier");
                 allRows.add(data);
                 mCount--;
                 publishProgress();
