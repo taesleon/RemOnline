@@ -49,6 +49,9 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(Model.RetailStore.CREATE_TABLE);
         db.execSQL(Model.Colors.CREATE_TABLE);
         db.execSQL(Model.Cashbox.CREATE_TABLE);
+        db.execSQL(Model.Order.CREATE_TABLE);
+        db.execSQL(Model.OrderRows.CREATE_TABLE);
+
     }
 
     @Override

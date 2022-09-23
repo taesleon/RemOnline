@@ -342,4 +342,40 @@ public class Model {
                 Cashbox.TYPE+
                 ") values(?, ?, ?)";
     }
+    public static class Order
+            implements BaseColumns {
+        public static final String ADDRESS = "address";
+        public static final String CITY = "city";
+        public static final String COMMENT = "comment";
+        public static final String CREATE_TABLE = "CREATE TABLE `orders` (_id INTEGER PRIMARY KEY AUTOINCREMENT,order_id TEXT, store_name TEXT, firstname TEXT, lastname TEXT, email TEXT, phone TEXT, payment TEXT, address TEXT, city TEXT, shipping_method TEXT, comment TEXT, sum REAL, date_added TEXT);";
+        public static final String DATE = "date_added";
+        public static final String EMAIL = "email";
+        public static final String FIRSTNAME = "firstname";
+        public static final String ID = "order_id";
+        public static final String INSERT_ROW_STATEMENT = "INSERT INTO orders (order_id, store_name, firstname, lastname, email, phone, payment, address, city, shipping_method, comment, sum, date_added) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        public static final String LASTNAME = "lastname";
+        public static final String PAYMENT = "payment";
+        public static final String PHONE = "phone";
+        public static final String SHIPPING_METHOD = "shipping_method";
+        public static final String STORE_NAME = "store_name";
+        public static final String SUM = "sum";
+        public static final String TABLE_NAME = "orders";
+    }
+
+    public static class OrderRows
+            implements BaseColumns {
+        public static final String CREATE_TABLE = "CREATE TABLE order_rows (_id INTEGER PRIMARY KEY AUTOINCREMENT,order_id TEXT,store_prefix TEXT,good_id TEXT,name TEXT,model TEXT,qnt INTEGER,stock INTEGER,price REAL,total REAL,domo_price REAL);";
+        public static final String FULL_PRICE = "domo_price";
+        public static final String GOOD_ID = "good_id";
+        public static final String INSERT_ROW_STATEMENT = "INSERT INTO order_rows (order_id, store_prefix, good_id, name, model, qnt, price, total, stock, domo_price) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        public static final String MODEL = "model";
+        public static final String NAME = "name";
+        public static final String ORDER_ID = "order_id";
+        public static final String PRICE = "price";
+        public static final String QNT = "qnt";
+        public static final String STOCK = "stock";
+        public static final String STORE_PREFIX = "store_prefix";
+        public static final String TABLE_NAME = "order_rows";
+        public static final String TOTAL = "total";
+    }
 }
