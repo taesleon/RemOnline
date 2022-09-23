@@ -3,24 +3,25 @@
     <!--список сотрудников-->
     <string name="employee">https://online.moysklad.ru/api/remap/1.1/entity/employee</string>
     <!--список розничных продаж-->
-    <string name="retaildemand">https://online.moysklad.ru/api/remap/1.1/entity/retaildemand</string>
+    <string name="retaildemand">https://api.remonline.app/retail/sales/</string>
     <!--список розничных возвратов-->
     <string name="retailsalesreturn">https://online.moysklad.ru/api/remap/1.1/entity/retailsalesreturn</string>
     <!--список отгрузок-->
     <string name="demand">https://online.moysklad.ru/api/remap/1.1/entity/demand</string>
     <!--список складов-->
-    <string name="store">https://online.moysklad.ru/api/remap/1.1/entity/store</string>
+    <string name="store">https://api.remonline.app/warehouse/</string>
     <!--справочник товаров (ассортимент)-->
     <string name="assortment">https://api.remonline.app/warehouse/goods/1808391</string>
     <!--список розничных точек-->
-    <string name="retailstore">https://online.moysklad.ru/api/remap/1.1/entity/retailstore</string>
+    <string name="retailstore">https://api.remonline.app/branches/</string>
     <!--список контрагентов-->
     <string name="counterparty">https://api.remonline.app/clients/</string>
     <!--список товарных групп-->
-    <string name="groupes">https://online.moysklad.ru/api/remap/1.1/entity/productfolder</string>
+    <string name="groupes">https://api.remonline.app/warehouse/categories/</string>
 
     <!--список касс-->
     <string name="cashbox">https://api.remonline.app/cashbox/</string>
+    <string name="cashboxrows">https://api.remonline.app/cashbox/report/</string>
 
     <!-- token remonline-->
     <string name="token_rem">"https://api.remonline.app/token/new"</string>

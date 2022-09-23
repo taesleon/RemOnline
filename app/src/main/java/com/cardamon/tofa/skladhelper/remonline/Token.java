@@ -29,22 +29,20 @@ package com.cardamon.tofa.skladhelper.remonline;
 
 import android.os.StrictMode;
 import android.util.Log;
+
 import com.cardamon.tofa.skladhelper.MyApplication;
 import com.cardamon.tofa.skladhelper.R;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import org.json.JSONObject;
 
 public class Token
 implements Runnable {
@@ -80,10 +78,8 @@ implements Runnable {
             Log.d("mimi", stringBuilder.toString());
             httpURLConnection.disconnect();
             token = new JSONObject(stringBuilder.toString()).getString("token");
-            StringBuilder stringBuilder2 = new StringBuilder();
-            stringBuilder2.append("new token ");
-            stringBuilder2.append(token);
-            Log.d("mimi",  stringBuilder2.toString());
+
+            Log.d("mimi",  token);
             if (inputStream == null) return;
             inputStream.close();
         }

@@ -521,11 +521,6 @@ public abstract class Downloader extends Thread implements JsonCatcher {
         }
     }
     protected void addTokenToRequest() {
-        RequestParams requestParams = this.mRequestParams;
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("token=");
-        stringBuilder.append(Token.token);
-        stringBuilder.append("&");
-        requestParams.setExtraParam(stringBuilder.toString());
+        mRequestParams.setExtraParam("token="+Token.token+"&");
     }
 }

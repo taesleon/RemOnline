@@ -1,6 +1,7 @@
 package com.cardamon.tofa.skladhelper.moysklad;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.cardamon.tofa.skladhelper.MyApplication;
 import com.cardamon.tofa.skladhelper.R;
@@ -30,12 +31,13 @@ public class StoreDownloader extends Downloader {
     @Override
     protected synchronized void parseJson(JSONObject json) {
         try {
-            JSONArray rows = json.getJSONArray("rows");
+
+            JSONArray rows = json.getJSONArray("data");
             for (int i = 0; i < rows.length(); i++) {
                 String[] data = new String[2];
                 data[0] = rows.getJSONObject(i).getString("id");
-                String name = rows.getJSONObject(i).getString("name");
-                data[1] = name;
+                data[1] = rows.getJSONObject(i).getString("title");
+
                 allRows.add(data);
                 mCount--;
                 publishProgress();

@@ -112,14 +112,7 @@ public class FragmentDemand extends FragmentMy {
 
     @Override
     public void onRefresh() {
-        new DemandDownloader(getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, this).start();
-        List<Fragment> fragments = MyApplication.ACTIVITY.getSupportFragmentManager().getFragments();
-        for (Fragment fragment : fragments) {
-            if (fragment instanceof FragmentRetail) {
-                ((FragmentMy) fragment).startAnimation();
-                new RetailDownloader(getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, ((FragmentRetail) fragment)).start();
-            }
-        }
+        updateAllFragments();
     }
 
 

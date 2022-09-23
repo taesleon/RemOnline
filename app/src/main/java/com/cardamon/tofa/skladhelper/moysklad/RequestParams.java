@@ -140,7 +140,7 @@ public class RequestParams {
      */
     public static String convertLong(long l) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd%20HH:mm:ss");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone((String) "Europe/Moscow"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone((String) "Europe/Kiev"));
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(l);
         return simpleDateFormat.format(calendar.getTime());

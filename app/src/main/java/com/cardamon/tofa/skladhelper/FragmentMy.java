@@ -8,10 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,15 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cardamon.tofa.skladhelper.moysklad.CashBoxRowsDownloader;
+import com.cardamon.tofa.skladhelper.moysklad.DemandDownloader;
+import com.cardamon.tofa.skladhelper.moysklad.RetailDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.stopRefreshing;
+import com.cardamon.tofa.skladhelper.remonline.Token;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import it.carlom.stikkyheader.core.StikkyHeaderBuilder;
 
@@ -149,5 +155,44 @@ abstract class FragmentMy extends Fragment implements
                     }
                 })
                 .show();
+    }
+
+    protected void updateAllFragments() {
+        ExecutorService executorService = Executors.newFixedThreadPool((int)1);
+        executorService.execute((Runnable)new Token());
+        for (Fragment fragment : MyApplication.ACTIVITY.getSupportFragmentManager().getFragments()) {
+            boolean isFragmentRetail = fragment instanceof FragmentRetail;
+            if (fragment instanceof FragmentRetail) {
+                FragmentRetail fragmentRetail = (FragmentRetail)fragment;
+                fragmentRetail.startAnimation();
+                executorService.execute((Runnable)new RetailDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentRetail));
+            }
+            if (fragment instanceof FragmentDemand) {
+
+                FragmentDemand fragmentDemand = (FragmentDemand)fragment;
+                fragmentDemand.startAnimation();
+                executorService.execute((Runnable)new DemandDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentDemand));
+
+            }
+            /*
+            if (fragment instanceof FragmentOrders) {
+                FragmentOrders fragmentOrders = (FragmentOrders)fragment;
+                fragmentOrders.startAnimation();
+                new StaubOrderDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentOrders).start();
+                new StaubOrderRowsDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentOrders).start();
+                new LacocotteOrderDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentOrders).start();
+                new LacocotteOrderRowsDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentOrders).start();
+            }
+            */
+
+            //кассовые отчеты по 4 кассам
+            if (isFragmentRetail) {
+                ArrayList<String[]> arrayList = new DbHelper().getCashBoxes();
+                for (int i = 0; i < arrayList.size(); ++i) {
+                    CashBoxRowsDownloader cashBoxRowsDownloader = new CashBoxRowsDownloader(getActivity(), 4, 2, (FragmentRetail) fragment, ((String[]) arrayList.get(i))[0]);
+                    executorService.execute((Runnable) cashBoxRowsDownloader);
+                }
+            }
+        }
     }
 }

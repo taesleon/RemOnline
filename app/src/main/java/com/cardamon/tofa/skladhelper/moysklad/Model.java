@@ -152,7 +152,7 @@ public class Model {
                 RetailRows.PRICE + ", " +
                 RetailRows.DISCOUNT + ", " +
                 RetailRows.GOOD_ID +
-                ") values(?, ?, ?, ?, ?)";
+                ") values(?, ?, ?, ?, (SELECT DISTINCT uuid FROM good WHERE code=?))";
     }
 
     public static class ReturnRows implements BaseColumns {
@@ -202,7 +202,7 @@ public class Model {
                 DemandRows.PRICE + ", " +
                 DemandRows.DISCOUNT + ", " +
                 DemandRows.GOOD_ID +
-                ") values(?, ?, ?, ?, ?)";
+                ") values(?, ?, ?, ?, (SELECT DISTINCT uuid FROM good WHERE code=?))";
     }
 
     public static class Agent implements BaseColumns {
@@ -258,15 +258,19 @@ public class Model {
         public static final String TABLE_NAME = "groupe";
         public static final String UUID = "uuid";
         public static final String NAME = "name";
+        public static final String OWNER = "owner";
+
         public static final String CREATE_TABLE = "CREATE TABLE " + Group.TABLE_NAME + " (" +
                 Group._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 Group.UUID + " TEXT, " +
-                Group.NAME + " TEXT" +
+                Group.NAME + " TEXT," +
+                Group.OWNER + " TEXT" +
                 ");";
         public static final String INSERT_ROW_STATEMENT = "INSERT INTO " + Group.TABLE_NAME + " (" +
                 Group.UUID + ", " +
-                Group.NAME +
-                ") values(?, ?)";
+                Group.NAME + ", " +
+                Group.OWNER +
+                ") values(?, ?, ?)";
     }
 
     public static class User implements BaseColumns {

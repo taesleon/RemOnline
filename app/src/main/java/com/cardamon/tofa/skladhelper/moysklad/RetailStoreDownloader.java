@@ -32,12 +32,12 @@ public class RetailStoreDownloader extends Downloader {
     @Override
     protected synchronized void parseJson(JSONObject json) {
         try {
-            JSONArray rows = json.getJSONArray("rows");
+            JSONArray rows = json.getJSONArray("data");
             for (int i = 0; i < rows.length(); i++) {
                 String[] data = new String[2];
                 data[0] = rows.getJSONObject(i).getString("id");
-                String name = rows.getJSONObject(i).getString("name");
-                data[1] = name;
+                data[1] = rows.getJSONObject(i).getString("name");
+
                 allRows.add(data);
                 mCount--;
                 publishProgress();

@@ -752,7 +752,6 @@ public class DbHelper extends SQLiteOpenHelper {
         String prevGroupName = "";
 
 
-
         String request = "SELECT G.name, G.code, G.article, G.sale_price/100, G.buy_price/100, GR.name, C.color_id, G.stock FROM good G\n" +
                 "INNER JOIN groupe GR ON G.group_id=GR.uuid\n" +
                 "INNER JOIN colors C ON C.object_id=GR.uuid " +
@@ -780,7 +779,7 @@ public class DbHelper extends SQLiteOpenHelper {
             m.put("ref", "арт: " + cursor.getString(2));
             m.put("sale", "розница: " + DateHelper.convertDoubleToString(cursor.getDouble(3)));
             m.put("buy", "закупка: " + DateHelper.convertDoubleToString(cursor.getDouble(4)));
-            if(cursor.getInt(7)>0)
+            if (cursor.getInt(7) > 0)
                 m.put("stock", cursor.getString(7));
             else
                 m.put("stock", "");
@@ -803,16 +802,16 @@ public class DbHelper extends SQLiteOpenHelper {
         calendar.add(Calendar.YEAR, -1);
         double sum = 0;
         int d = 0;
-        for(int i =0; i<6; i+=2){
-            long[]l = DateHelper.getDayOfWeekByYear(calendar.get(Calendar.YEAR));
-            double s =getTotalSumForPeriod(l[0], l[1]);
-            sum+=s;
-            if(s>0)
+        for (int i = 0; i < 6; i += 2) {
+            long[] l = DateHelper.getDayOfWeekByYear(calendar.get(Calendar.YEAR));
+            double s = getTotalSumForPeriod(l[0], l[1]);
+            sum += s;
+            if (s > 0)
                 d++;
             calendar.add(Calendar.YEAR, -1);
         }
 
-        return sum/d;
+        return sum / d;
 
     }
 
@@ -821,23 +820,84 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE good SET stock=0");
 
 
-        String request1="UPDATE good\n" +
+        String request1 = "UPDATE good\n" +
                 "    SET stock = CASE uuid \n";
-        String request3 ="\tEND\n" +
+        String request3 = "\tEND\n" +
                 "WHERE uuid IN (SELECT uuid FROM good)";
-        String request2="";
+        String request2 = "";
 
-        for(int i=0; i<allRows.size(); i++){
+        for (int i = 0; i < allRows.size(); i++) {
             int stock = (int) Float.parseFloat(allRows.get(i)[1]);
-            if(stock>0) {
+            if (stock > 0) {
                 request2 += "WHEN '" + allRows.get(i)[0];
                 if (i != allRows.size() - 1)
                     request2 += "' THEN " + stock + " \n";
             }
         }
-        String mainRequest = request1+request2+request3;
+        String mainRequest = request1 + request2 + request3;
         db.execSQL(mainRequest);
 
         db.close();
     }
+
+    public ArrayList<String[]> getCashBoxes() {
+        SQLiteDatabase sQLiteDatabase = MyApplication.getSqlDataBase();
+        Cursor cursor = sQLiteDatabase.rawQuery("SELECT uuid, type FROM cashbox", null);
+        ArrayList arrayList = new ArrayList();
+        while (cursor.moveToNext()) {
+            String[] arrstring = new String[]{cursor.getString(0), cursor.getString(1)};
+            arrayList.add((Object) arrstring);
+        }
+        sQLiteDatabase.close();
+        cursor.close();
+        return arrayList;
+    }
+
+    /**
+     * кассовые отчет
+     * 0 - наличная касса
+     * 1 - безнальная касса
+     *
+     * @param paymentList
+     * @param boxUuid
+     */
+    public void updateRetailSellType(ArrayList<String[]> paymentList, String boxUuid) {
+        SQLiteDatabase sQLiteDatabase = MyApplication.getSqlDataBase();
+
+        Cursor cursor = sQLiteDatabase.rawQuery("SELECT DISTINCT type FROM cashbox WHERE uuid=?", new String[]{boxUuid});
+        cursor.moveToFirst();
+        int boxTypeInt = cursor.getInt(0);
+
+        for (int i = 0; i < paymentList.size(); i++) {
+            long moment = Long.parseLong(paymentList.get(i)[0]);
+            long sum = Long.parseLong(paymentList.get(i)[1]);
+            String fieldType;
+
+            switch (boxTypeInt) {
+                case 0:
+                    fieldType = "cash";
+                    break;
+                case 1:
+                    fieldType = "none_cash";
+                    break;
+                default:
+                    fieldType = "";
+            }
+
+            String sql = "UPDATE retail SET ";
+            sql += fieldType;
+            sql += "=sum WHERE date BETWEEN ";
+            sql += moment - 100000L;
+            sql += " AND ";
+            sql += moment + 100000L;
+            sql += " AND sum BETWEEN ";
+            sql += sum - 10l;
+            sql += " AND ";
+            sql += sum + 10l;
+
+            sQLiteDatabase.execSQL(sql);
+        }
+        return;
+    }
+
 }

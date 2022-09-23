@@ -14,7 +14,9 @@ import org.json.JSONObject;
  * парсим группы
  */
 public class GroupDownloader extends Downloader {
-    /** @see Downloader#Downloader(Activity, int, int) */
+    /**
+     * @see Downloader#Downloader(Activity, int, int)
+     */
     public GroupDownloader(Activity mActivity, int showDialogMsg, int insertMsg) {
         super(mActivity, showDialogMsg, insertMsg);
         mBaseUrl = MyApplication.ACTIVITY.getResources().getString(R.string.groupes);
@@ -24,17 +26,29 @@ public class GroupDownloader extends Downloader {
     /**
      * парсим и добавляем в базу
      * если конец, гасим диалог
+     *
      * @param json ответ HTTP сервера
      */
     @Override
     protected synchronized void parseJson(JSONObject json) {
         try {
-            JSONArray rows = json.getJSONArray("rows");
+            JSONArray rows = json.getJSONArray("data");
             for (int i = 0; i < rows.length(); i++) {
-                String[] data = new String[2];
+                String[] data = new String[3];
                 data[0] = rows.getJSONObject(i).getString("id");
-                String name = rows.getJSONObject(i).getString("name");
-                data[1] = name;
+                data[1] = rows.getJSONObject(i).getString("title");
+                data[2] = "";
+                if (rows.getJSONObject(i).has("parent_id")) {
+                    switch (rows.getJSONObject(i).getInt("parent_id")) {
+                        case 703878:
+                            data[2] = "AS";
+                            break;
+                        case 703877:
+                            data[2] = "bv";
+                            break;
+                    }
+                }
+
                 allRows.add(data);
                 mCount--;
                 publishProgress();
@@ -43,7 +57,7 @@ public class GroupDownloader extends Downloader {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if(mCount==0)
+        if (mCount == 0)
             finishSuccess();
     }
 

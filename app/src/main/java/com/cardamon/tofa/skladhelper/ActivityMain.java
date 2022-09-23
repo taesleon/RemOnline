@@ -26,7 +26,8 @@ import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cardamon.tofa.skladhelper.moysklad.AgentDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.BrokenRequest;
-import com.cardamon.tofa.skladhelper.moysklad.CachBoxDownloader;
+import com.cardamon.tofa.skladhelper.moysklad.CashBoxDownloader;
+import com.cardamon.tofa.skladhelper.moysklad.CashBoxRowsDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.DemandDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.Downloader;
 import com.cardamon.tofa.skladhelper.moysklad.GoodDownloader;
@@ -44,6 +45,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -68,13 +70,16 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     private ViewPager mViewPager;
     private DbHelper db;
 
+
     protected void onCreate(Bundle savedInstanceState) {
         //для доступа из любого места приложения
         MyApplication.ACTIVITY = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //db = new DbHelper();
+
+
+         db = new DbHelper();
         /*
         if (db.checkOldDocs()) {
             //this.addOldData();
@@ -269,6 +274,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         ExecutorService exService = Executors.newFixedThreadPool(1);
+
+        //получаем новый токен !!
         exService.execute(new Token());
 
         DbHelper db = new DbHelper();
@@ -277,24 +284,29 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
             case R.id.update_lib:
                 //удалить старые справочники
                 db.deleteLibs();
-/*
+
                 exService.execute(new GoodDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
                 exService.execute(new AgentDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
-                exService.execute(new CachBoxDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
-                /*
-                exService.execute(new StoreDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
+                exService.execute(new CashBoxDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
                 exService.execute(new RetailStoreDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
+                exService.execute(new StoreDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
                 exService.execute(new GroupDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
-                */
+
                 break;
             //обновить документы
             case R.id.update_doc:
                 //удалить старые документы
                 db.deleteDocs();
+                addOldData();
                 exService = Executors.newFixedThreadPool(1);
                 exService.execute(new RetailDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
-                exService.execute(new ReturnDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
+                //exService.execute(new ReturnDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
                 exService.execute(new DemandDownloader(this, Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG));
+                ArrayList<String[]> boxList = db.getCashBoxes();
+                for (int i = 0; i < boxList.size(); ++i) {
+                    exService.execute(new CashBoxRowsDownloader(this, 4, 2, boxList.get(i)[0]));
+                }
+
                 break;
             case R.id.library_groups:
                 startActivity(new Intent(this, ActLibGroup.class));

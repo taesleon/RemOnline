@@ -77,7 +77,7 @@ public class FragmentRetail extends FragmentMy {
 
     @Override
     public void update() {
-        if(MyApplication.ACTIVITY==null || getView()==null)
+        if (MyApplication.ACTIVITY == null || getView() == null)
             return;
 
         long date1 = MyApplication.ACTIVITY.getFabMenu().getLeftDateForServer();
@@ -95,7 +95,7 @@ public class FragmentRetail extends FragmentMy {
             img.setImageDrawable(getActivity().getDrawable(R.drawable.ic_filter_selected));
 
 
-        double sums[] = db.getRetailSum(date1, date2,mSaleFilter.getString());
+        double sums[] = db.getRetailSum(date1, date2, mSaleFilter.getString());
 
         mSum.setText(DateHelper.convertDoubleToString(sums[0]));
         mCashSum.setText(DateHelper.convertDoubleToString(sums[1]));
@@ -115,14 +115,7 @@ public class FragmentRetail extends FragmentMy {
 
     @Override
     public void onRefresh() {
-        new RetailDownloader(getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, this).start();
-        List<Fragment> fragments = MyApplication.ACTIVITY.getSupportFragmentManager().getFragments();
-        for (Fragment fragment : fragments) {
-            if (fragment instanceof FragmentDemand) {
-                ((FragmentMy) fragment).startAnimation();
-                new DemandDownloader(getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, ((FragmentDemand) fragment)).start();
-            }
-        }
+        updateAllFragments();
     }
 
     @Override
