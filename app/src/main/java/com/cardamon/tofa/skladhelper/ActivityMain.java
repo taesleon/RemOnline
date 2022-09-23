@@ -60,6 +60,8 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
     public DateSetObserver fragmentDemand;
     public DateSetObserver fragmentRetail;
     public DateSetObserver fragmentJust;
+    public DateSetObserver fragmentOrder;
+
     //слайдер фрагментов
     private ViewPager mViewPager;
     private DbHelper db;
@@ -143,32 +145,21 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onPageSelected(int position) {
-                RelativeLayout headerFragment0, headerFragment1, headerFragment2;
+                RelativeLayout headerFragment0, headerFragment1, headerFragment2, headerFragment3;
                 headerFragment0 = mAdapter.getPage(0).getView().findViewById(R.id.header1);
                 headerFragment1 = mAdapter.getPage(1).getView().findViewById(R.id.header1);
                 headerFragment2 = mAdapter.getPage(2).getView().findViewById(R.id.header1);
+                headerFragment3 = mAdapter.getPage(3).getView().findViewById(R.id.header1);
 
                 int colors[] = getResources().getIntArray(R.array.tabs_colors);
-                switch (position) {
-                    case 0:
-                        toolbar.setBackgroundColor(colors[position]);
-                        viewPagerTab.setBackgroundColor(colors[position]);
-                        headerFragment1.setBackgroundColor(colors[position]);
-                        headerFragment0.setBackgroundColor(colors[position]);
-                        break;
-                    case 1:
-                        toolbar.setBackgroundColor(colors[position]);
-                        viewPagerTab.setBackgroundColor(colors[position]);
-                        headerFragment0.setBackgroundColor(colors[position]);
-                        headerFragment1.setBackgroundColor(colors[position]);
-                        headerFragment2.setBackgroundColor(colors[position]);
-                        break;
-                    case 2:
-                        toolbar.setBackgroundColor(colors[position]);
-                        viewPagerTab.setBackgroundColor(colors[position]);
-                        headerFragment2.setBackgroundColor(colors[position]);
-                        headerFragment1.setBackgroundColor(colors[position]);
-                }
+                toolbar.setBackgroundColor(colors[position]);
+
+                viewPagerTab.setBackgroundColor(colors[position]);
+                headerFragment0.setBackgroundColor(colors[position]);
+                headerFragment1.setBackgroundColor(colors[position]);
+                headerFragment2.setBackgroundColor(colors[position]);
+                headerFragment3.setBackgroundColor(colors[position]);
+
             }
 
             @Override

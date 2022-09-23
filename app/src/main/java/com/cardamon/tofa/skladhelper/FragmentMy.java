@@ -164,19 +164,19 @@ abstract class FragmentMy extends Fragment implements
 
     protected void updateAllFragments() {
         ExecutorService executorService = Executors.newFixedThreadPool((int)1);
-        executorService.execute((Runnable)new Token());
+        executorService.execute(new Token());
         for (Fragment fragment : MyApplication.ACTIVITY.getSupportFragmentManager().getFragments()) {
             boolean isFragmentRetail = fragment instanceof FragmentRetail;
             if (fragment instanceof FragmentRetail) {
                 FragmentRetail fragmentRetail = (FragmentRetail)fragment;
                 fragmentRetail.startAnimation();
-                executorService.execute((Runnable)new RetailDownloader((AppCompatActivity)this.getActivity(), Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG, fragmentRetail));
+                executorService.execute(new RetailDownloader(this.getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, fragmentRetail));
             }
             if (fragment instanceof FragmentDemand) {
 
                 FragmentDemand fragmentDemand = (FragmentDemand)fragment;
                 fragmentDemand.startAnimation();
-                executorService.execute((Runnable)new DemandDownloader((AppCompatActivity)this.getActivity(), Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG, fragmentDemand));
+                executorService.execute(new DemandDownloader(this.getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, fragmentDemand));
 
             }
 
@@ -194,8 +194,8 @@ abstract class FragmentMy extends Fragment implements
             if (isFragmentRetail) {
                 ArrayList<String[]> arrayList = new DbHelper().getCashBoxes();
                 for (int i = 0; i < arrayList.size(); ++i) {
-                    CashBoxRowsDownloader cashBoxRowsDownloader = new CashBoxRowsDownloader(getActivity(), 4, 2, (FragmentRetail) fragment, ((String[]) arrayList.get(i))[0]);
-                    executorService.execute((Runnable) cashBoxRowsDownloader);
+                    CashBoxRowsDownloader cashBoxRowsDownloader = new CashBoxRowsDownloader(getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, (FragmentRetail) fragment, arrayList.get(i)[0]);
+                    executorService.execute(cashBoxRowsDownloader);
                 }
             }
         }

@@ -929,8 +929,102 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public void updateOrderRows(ArrayList<String[]> rows, String prefix) {
         SQLiteDatabase db = MyApplication.getSqlDataBase();
-        db.execSQL("DELETE from order_rows WHERE store_prefix=?",new String[]{prefix});
+        db.execSQL("DELETE from order_rows WHERE store_prefix=?", new String[]{prefix});
         insertInTable("INSERT INTO order_rows (order_id, store_prefix, good_id, name, model, qnt, price, total, stock, domo_price) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", rows);
         db.close();
+    }
+
+    public ArrayList<HashMap<String, String>> getOrderRows(String string2, String string3) {
+        SQLiteDatabase db = MyApplication.getSqlDataBase();
+        ArrayList arrayList = new ArrayList();
+        Cursor cursor = db.rawQuery("SELECT * FROM order_rows WHERE order_id=? AND store_prefix=?", new String[]{string2, string3});
+        HashMap hashMap = new HashMap();
+        while (cursor.moveToNext()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(cursor.getInt(6));
+            stringBuilder.append(" X ");
+            stringBuilder.append(DateHelper.convertDoubleToString(cursor.getDouble(8)));
+            stringBuilder.append(" = ");
+            stringBuilder.append(DateHelper.convertDoubleToString(cursor.getDouble(9)));
+            hashMap.put((Object) "line", (Object) stringBuilder.toString());
+            hashMap.put((Object) "name", (Object) cursor.getString(4));
+            hashMap.put((Object) "qnt", (Object) cursor.getString(6));
+            hashMap.put((Object) "model", (Object) cursor.getString(5));
+            hashMap.put((Object) "stock", (Object) cursor.getString(7));
+            hashMap.put((Object) "price", (Object) cursor.getString(8));
+            hashMap.put((Object) "total", (Object) cursor.getString(9));
+            hashMap.put((Object) "attention", (Object) "instock");
+            if (cursor.getInt(7) == 0) {
+                hashMap.put((Object) "attention", (Object) "notstock");
+            }
+            arrayList.add((Object) hashMap);
+            hashMap = new HashMap();
+        }
+        cursor.close();
+        db.close();
+        return arrayList;
+    }
+
+    public HashMap<String, String> getOrderInfo(String string2, String string3) {
+        HashMap hashMap = new HashMap();
+        SQLiteDatabase sQLiteDatabase = MyApplication.getSqlDataBase();
+        Cursor cursor = sQLiteDatabase.rawQuery("SELECT lastname, firstname, phone, email, city, address, payment, shipping_method FROM orders WHERE order_id=? AND store_name=?", new String[]{string2, string3});
+        while (cursor.moveToNext()) {
+            hashMap.put((Object) "lastname", (Object) cursor.getString(0));
+            hashMap.put((Object) "firstname", (Object) cursor.getString(1));
+            hashMap.put((Object) "phone", (Object) cursor.getString(2));
+            hashMap.put((Object) "email", (Object) cursor.getString(3));
+            hashMap.put((Object) "city", (Object) cursor.getString(4));
+            hashMap.put((Object) "address", (Object) cursor.getString(5));
+            hashMap.put((Object) "payment", (Object) cursor.getString(6));
+            hashMap.put((Object) "shipping", (Object) cursor.getString(7));
+        }
+        sQLiteDatabase.close();
+        cursor.close();
+        return hashMap;
+    }
+
+    public double getOrderSum(long l, long l2) {
+        SQLiteDatabase sQLiteDatabase = MyApplication.getSqlDataBase();
+        String[] arrstring = new String[2];
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(l);
+        stringBuilder.append("");
+        arrstring[0] = stringBuilder.toString();
+        StringBuilder stringBuilder2 = new StringBuilder();
+        stringBuilder2.append(l2);
+        stringBuilder2.append("");
+        arrstring[1] = stringBuilder2.toString();
+        Cursor cursor = sQLiteDatabase.rawQuery("SELECT SUM(R.total) FROM order_rows AS R INNER JOIN orders AS O ON O.order_id=R.order_id AND O.store_name=R.store_prefix WHERE O.date_added BETWEEN ? AND ?", arrstring);
+        cursor.moveToFirst();
+        double d = cursor.getDouble(0);
+        cursor.close();
+        sQLiteDatabase.close();
+        return d;
+    }
+
+    public double getOrderRealSum(long l, long l2) {
+        SQLiteDatabase sQLiteDatabase = MyApplication.getSqlDataBase();
+        String[] arrstring = new String[2];
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(l);
+        stringBuilder.append("");
+        arrstring[0] = stringBuilder.toString();
+        StringBuilder stringBuilder2 = new StringBuilder();
+        stringBuilder2.append(l2);
+        stringBuilder2.append("");
+        arrstring[1] = stringBuilder2.toString();
+        Cursor cursor = sQLiteDatabase.rawQuery("SELECT SUM(R.total) FROM order_rows R JOIN orders O ON R.order_id=O.order_id AND R.store_prefix=O.store_name WHERE O.date_added BETWEEN ? AND ? AND R.stock>0", arrstring);
+        cursor.moveToFirst();
+        double d = cursor.getDouble(0);
+        cursor.close();
+        sQLiteDatabase.close();
+        return d;
+    }
+
+    public Cursor getOrderCursor(long date1, long date2) {
+        SQLiteDatabase db = MyApplication.getSqlDataBase();
+        String sql = "SELECT O.*, SUM(R.total) AS full_sum, SUM(R.stock*R.price) AS real_sum  FROM orders AS O LEFT JOIN order_rows AS R ON R.order_id=O.order_id AND O.store_name=R.store_prefix WHERE O.date_added BETWEEN ? AND ? GROUP BY O.order_id ORDER BY date_added DESC";
+        return db.rawQuery(sql, new String[]{date1 + "", date2 + ""});
     }
 }

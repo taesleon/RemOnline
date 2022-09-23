@@ -42,6 +42,8 @@
         <activity android:name=".ActLibStore"></activity>
         <activity android:name=".ActLibAgent"></activity>
         <activity android:name=".ActLibGood"></activity>
+        <activity android:name=".ActivityOrder" ></activity>
+
     </application>
 
 </manifest>
