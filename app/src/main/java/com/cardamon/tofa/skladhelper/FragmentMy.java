@@ -22,7 +22,12 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cardamon.tofa.skladhelper.moysklad.CashBoxRowsDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.DemandDownloader;
+import com.cardamon.tofa.skladhelper.moysklad.Downloader;
+import com.cardamon.tofa.skladhelper.moysklad.LacocotteOrderDownloader;
+import com.cardamon.tofa.skladhelper.moysklad.LacocotteOrderRowsDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.RetailDownloader;
+import com.cardamon.tofa.skladhelper.moysklad.StaubOrderDownloader;
+import com.cardamon.tofa.skladhelper.moysklad.StaubOrderRowsDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.stopRefreshing;
 import com.cardamon.tofa.skladhelper.remonline.Token;
 
@@ -165,25 +170,25 @@ abstract class FragmentMy extends Fragment implements
             if (fragment instanceof FragmentRetail) {
                 FragmentRetail fragmentRetail = (FragmentRetail)fragment;
                 fragmentRetail.startAnimation();
-                executorService.execute((Runnable)new RetailDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentRetail));
+                executorService.execute((Runnable)new RetailDownloader((AppCompatActivity)this.getActivity(), Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG, fragmentRetail));
             }
             if (fragment instanceof FragmentDemand) {
 
                 FragmentDemand fragmentDemand = (FragmentDemand)fragment;
                 fragmentDemand.startAnimation();
-                executorService.execute((Runnable)new DemandDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentDemand));
+                executorService.execute((Runnable)new DemandDownloader((AppCompatActivity)this.getActivity(), Downloader.SHOW_DIALOG_MSG, Downloader.INSERT_MSG, fragmentDemand));
 
             }
-            /*
-            if (fragment instanceof FragmentOrders) {
-                FragmentOrders fragmentOrders = (FragmentOrders)fragment;
-                fragmentOrders.startAnimation();
-                new StaubOrderDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentOrders).start();
-                new StaubOrderRowsDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentOrders).start();
-                new LacocotteOrderDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentOrders).start();
-                new LacocotteOrderRowsDownloader((AppCompatActivity)this.getActivity(), 4, 2, fragmentOrders).start();
+
+            if (fragment instanceof FragmentOrder) {
+                FragmentOrder fragmentOrder = (FragmentOrder)fragment;
+                fragmentOrder.startAnimation();
+                new StaubOrderDownloader((AppCompatActivity)this.getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, fragmentOrder).start();
+                new StaubOrderRowsDownloader((AppCompatActivity)this.getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, fragmentOrder).start();
+                new LacocotteOrderDownloader((AppCompatActivity)this.getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, fragmentOrder).start();
+                new LacocotteOrderRowsDownloader((AppCompatActivity)this.getActivity(), Downloader.SHOW_REFRESH_MSG, Downloader.UPDATE_MSG, fragmentOrder).start();
             }
-            */
+
 
             //кассовые отчеты по 4 кассам
             if (isFragmentRetail) {

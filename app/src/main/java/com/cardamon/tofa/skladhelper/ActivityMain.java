@@ -3,7 +3,6 @@ package com.cardamon.tofa.skladhelper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -35,7 +34,6 @@ import com.cardamon.tofa.skladhelper.moysklad.GroupDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.Model;
 import com.cardamon.tofa.skladhelper.moysklad.RetailDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.RetailStoreDownloader;
-import com.cardamon.tofa.skladhelper.moysklad.ReturnDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.StoreDownloader;
 import com.cardamon.tofa.skladhelper.remonline.Token;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -48,10 +46,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
 
 import java.io.InputStream;
 
@@ -77,17 +71,21 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//рудимент от моего склада
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putString("password", "Basic c3Rhc0BzaGFraF9idjp0ZmZpazM=");
+        editor.apply();
 
 
-         db = new DbHelper();
+        db = new DbHelper();
         /*
         if (db.checkOldDocs()) {
             //this.addOldData();
             //this.startActivity(new Intent(getApplicationContext(), NewUser.class));
         }
         */
-        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        final SharedPreferences.Editor editor = mPrefs.edit();
+
 
         //если нет авторизации, запускаем активность нового пользователя
 
@@ -102,8 +100,9 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentPagerItemAdapter mAdapter = new FragmentPagerItemAdapter(
                 fragmentManager, FragmentPagerItems.with(this)
-                .add("РОЗНИЦА", FragmentRetail.class)
+                .add("РЕТЕЙЛ", FragmentRetail.class)
                 .add("БЕЗНАЛ", FragmentDemand.class)
+                .add("ЗАКАЗЫ", FragmentOrder.class)
                 .add("ИТОГО", FragmentJust.class)
                 .create());
 

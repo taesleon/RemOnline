@@ -21,6 +21,8 @@
     <string name="title_retail_demand">Розница</string>
     <string name="title_retail_return">Возвраты</string>
     <string name="title_demand">Отгрузки</string>
+    <string name="title_orders">Интернет заказы</string>
+    <string name="api_staub">https://staub.com.ua/index.php</string>
     <string name="action_settings">хер знает</string>
     <item name="auth_error" type="id">ошибка авторизации !</item>
     <string name="navigation_drawer_open">Open navigation drawer</string>

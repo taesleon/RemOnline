@@ -903,4 +903,34 @@ public class DbHelper extends SQLiteOpenHelper {
         return;
     }
 
+    public void updateOrders(ArrayList<String[]> rows, String prefix) {
+        SQLiteDatabase db = MyApplication.getSqlDataBase();
+        String sql = "SELECT SUM(sum) FROM orders WHERE store_name=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{prefix});
+        cursor.moveToNext();
+        //текущая сумма заказов по сайту, by prefix
+        double currentSum = cursor.getDouble(0);
+        //удаляем все строки by prefix
+        db.execSQL("DELETE from orders WHERE store_name=?", new String[]{prefix});
+
+        this.insertInTable("INSERT INTO orders (order_id, store_name, firstname, lastname, email, phone, payment, address, city, shipping_method, comment, sum, date_added) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", rows);
+        cursor = db.rawQuery(sql, new String[]{prefix});
+        cursor.moveToNext();
+        //новая сумма заказов
+        double newSum = cursor.getDouble(0);
+
+        if (currentSum != newSum) {
+            MyApplication.vibrate(MyApplication.SHORT_VIBRATE);
+            MyApplication.sound();
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public void updateOrderRows(ArrayList<String[]> rows, String prefix) {
+        SQLiteDatabase db = MyApplication.getSqlDataBase();
+        db.execSQL("DELETE from order_rows WHERE store_prefix=?",new String[]{prefix});
+        insertInTable("INSERT INTO order_rows (order_id, store_prefix, good_id, name, model, qnt, price, total, stock, domo_price) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", rows);
+        db.close();
+    }
 }

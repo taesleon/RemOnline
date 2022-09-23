@@ -161,4 +161,9 @@ public class RequestParams {
     public void clearExtraParam() {
         this.extraParam = "";
     }
+    public void setAllIntervalForSites() {
+        setAllInterval();
+        setExtraParam("filter=moment%3E"+RequestParams.convertLong(961913449L)+";moment%3C"+RequestParams.convertLong(this.dateTo)+"&");
+    }
+
 }
