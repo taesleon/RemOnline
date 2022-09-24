@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -77,20 +78,29 @@ public class ActivityOrder extends AppCompatActivity {
         fieldInfo.setVisibility(View.VISIBLE);
         fieldInfo.setText("\uD835\uDC8A");//i
 
-        HashMap<String, String> orderInfo = dbHelper.getOrderInfo(this.mUuid, prefixThreeSymb);
+        HashMap<String, String> orderInfoData = dbHelper.getOrderInfo(this.mUuid, prefixThreeSymb);
 
+        View rootView = findViewById(android.R.id.content).getRootView();
+        LinearLayout myLayout = findViewById(R.id.order_info);
+
+        Button myButton = new Button(this);
+        myButton.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
+
+        myLayout.addView(myButton);
 
         //!!!!! поправить !
-         TextView bayerName = findViewById(R.id.ba);
-        //bayerName.setText(orderInfo.get((Object)"lastname") +"  "+ (String)orderInfo.get((Object)"firstname"));
+         //TextView bayerName = ((TextView) this.findViewById(R.id.ba));
+        //bayerName.setText(orderInfoData.get((Object)"lastname") +"  "+ (String)orderInfoData.get((Object)"firstname"));
 /*
 
-        ((TextView) this.findViewById(R.id.bayer_phone)).setText((CharSequence) orderInfo.get((Object) "phone"));
-        ((TextView) this.findViewById(R.id.bayer_email)).setText((CharSequence) orderInfo.get((Object) "email"));
-        ((TextView) this.findViewById(R.id.bayer_city)).setText((CharSequence) orderInfo.get((Object) "city"));
-        ((TextView) this.findViewById(R.id.bayer_address)).setText((CharSequence) orderInfo.get((Object) "address"));
-        ((TextView) this.findViewById(R.id.bayer_payment)).setText((CharSequence) orderInfo.get((Object) "payment"));
-        ((TextView) this.findViewById(R.id.bayer_shipping)).setText((CharSequence) orderInfo.get((Object) "shipping"));
+        ((TextView) this.findViewById(R.id.bayer_phone)).setText((CharSequence) orderInfoData.get((Object) "phone"));
+        ((TextView) this.findViewById(R.id.bayer_email)).setText((CharSequence) orderInfoData.get((Object) "email"));
+        ((TextView) this.findViewById(R.id.bayer_city)).setText((CharSequence) orderInfoData.get((Object) "city"));
+        ((TextView) this.findViewById(R.id.bayer_address)).setText((CharSequence) orderInfoData.get((Object) "address"));
+        ((TextView) this.findViewById(R.id.bayer_payment)).setText((CharSequence) orderInfoData.get((Object) "payment"));
+        ((TextView) this.findViewById(R.id.bayer_shipping)).setText((CharSequence) orderInfoData.get((Object) "shipping"));
 
         fieldInfo.setOnClickListener(new View.OnClickListener(this, header, fieldInfo) {
 
