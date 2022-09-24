@@ -44,7 +44,7 @@ public class FragmentOrder extends FragmentMy {
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
         if (bundle != null) {
-            ((RelativeLayout)view.findViewById(R.id.header1)).setBackgroundColor(this.getResources().getIntArray(R.array.tabs_colors)[MyApplication.ACTIVITY.getCurrentPage()]);
+            view.findViewById(R.id.header1).setBackgroundColor(this.getResources().getIntArray(R.array.tabs_colors)[MyApplication.ACTIVITY.getCurrentPage()]);
         }
     }
 

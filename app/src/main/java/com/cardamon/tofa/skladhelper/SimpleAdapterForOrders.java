@@ -17,27 +17,32 @@ public class SimpleAdapterForOrders extends SimpleAdapter {
         super(context, list, n, arrstring, arrn);
     }
 
-    public View getView(int n, View view, ViewGroup viewGroup) {
-        String string2;
-        View view2 = super.getView(n, view, viewGroup);
-        TextView textView = (TextView)view2.findViewById(R.id.group_prefix);
-        if (!((TextView)view2.findViewById(R.id.discount)).getText().equals((Object)"")) {
-            view2.findViewById(R.id.discount).setVisibility(View.INVISIBLE);
+    public View getView(int n, View v, ViewGroup viewGroup) {
+        View view = super.getView(n, v, viewGroup);
+        TextView prefixField = view.findViewById(R.id.group_prefix);
+        String perfixText = (String)prefixField.getText();
+
+        /*
+        TextView discountField = view.findViewById(R.id.discount);
+        if (discountField.getText().equals("")) {
+            view.findViewById(R.id.discount).setVisibility(View.INVISIBLE);
         }
-        if (!(string2 = (String)((TextView)view2.findViewById(R.id.group_id)).getText()).equals((Object)"")) {
+
+        if (!(string2 = (String)((TextView)view.findViewById(R.id.group_id)).getText()).equals((Object)"")) {
             Integer.parseInt((String)string2);
         }
-        String string3 = (String)textView.getText();
-        GradientDrawable gradientDrawable = (GradientDrawable)textView.getBackground();
-        textView.setTextSize(20.0f);
+        */
+
+        GradientDrawable gradientDrawable = (GradientDrawable)prefixField.getBackground();
+        prefixField.setTextSize(20.0f);
         gradientDrawable.setColor(Color.argb((int)0, (int)0, (int)0, (int)0));
-        if (string3.equals((Object)"notstock")) {
+        if (perfixText.equals("notstock")) {
             gradientDrawable.setColor(MyApplication.getColorById(49));
-            textView.setText((CharSequence)"-");
-            return view2;
+            prefixField.setText((CharSequence)"-");
+            return view;
         }
         gradientDrawable.setColor(MyApplication.getColorById(19));
-        textView.setText((CharSequence)"+");
-        return view2;
+        prefixField.setText("+");
+        return view;
     }
 }
