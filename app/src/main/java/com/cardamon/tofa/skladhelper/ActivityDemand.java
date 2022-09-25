@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
@@ -43,6 +44,9 @@ public class ActivityDemand extends AppCompatActivity {
                 finish();
             }
         });
+
+        LinearLayout linearLayout = findViewById(R.id.order_info_layout);
+        linearLayout.setVisibility(View.INVISIBLE);
 
         mListView = findViewById(R.id.listview);
         mUuid = getIntent().getStringExtra("uuid");

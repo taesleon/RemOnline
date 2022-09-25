@@ -4,18 +4,17 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import it.carlom.stikkyheader.core.StikkyHeaderBuilder;
 
@@ -47,6 +46,9 @@ public class ActivityOrder extends AppCompatActivity {
         RelativeLayout header = this.findViewById(R.id.header2);
         header.setBackgroundColor(this.getColor(R.color.fragment1));
         toolbar.setBackgroundColor(this.getColor(R.color.fragment1));
+
+        LinearLayout linearLayout = findViewById(R.id.order_info_layout);
+        linearLayout.setVisibility(View.INVISIBLE);
 
         ((TextView) this.findViewById(R.id.description)).setText(this.getIntent().getStringExtra("description"));
         ((TextView) this.findViewById(R.id.date)).setText(this.getIntent().getStringExtra("date"));
@@ -80,53 +82,42 @@ public class ActivityOrder extends AppCompatActivity {
 
         HashMap<String, String> orderInfoData = dbHelper.getOrderInfo(this.mUuid, prefixThreeSymb);
 
-        View rootView = findViewById(android.R.id.content).getRootView();
-        LinearLayout myLayout = findViewById(R.id.order_info);
-
-        Button myButton = new Button(this);
-        myButton.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
-
-        myLayout.addView(myButton);
-
-        //!!!!! поправить !
-         //TextView bayerName = ((TextView) this.findViewById(R.id.ba));
-        //bayerName.setText(orderInfoData.get((Object)"lastname") +"  "+ (String)orderInfoData.get((Object)"firstname"));
-/*
-
-        ((TextView) this.findViewById(R.id.bayer_phone)).setText((CharSequence) orderInfoData.get((Object) "phone"));
-        ((TextView) this.findViewById(R.id.bayer_email)).setText((CharSequence) orderInfoData.get((Object) "email"));
-        ((TextView) this.findViewById(R.id.bayer_city)).setText((CharSequence) orderInfoData.get((Object) "city"));
-        ((TextView) this.findViewById(R.id.bayer_address)).setText((CharSequence) orderInfoData.get((Object) "address"));
-        ((TextView) this.findViewById(R.id.bayer_payment)).setText((CharSequence) orderInfoData.get((Object) "payment"));
-        ((TextView) this.findViewById(R.id.bayer_shipping)).setText((CharSequence) orderInfoData.get((Object) "shipping"));
-
-        fieldInfo.setOnClickListener(new View.OnClickListener(this, header, fieldInfo) {
-
-
-            public void onClick(View view) {
-                ActivityOrder.access$000(this.this$0).smoothScrollToPosition(0);
-                int n = this.val$relativeLayout.getHeight();
-                android.widget.LinearLayout linearLayout = (android.widget.LinearLayout)this.this$0.findViewById(2131296514);
-                android.widget.FrameLayout$LayoutParams layoutParams = new android.widget.FrameLayout$LayoutParams((android.view.ViewGroup$MarginLayoutParams)new android.widget.LinearLayout$LayoutParams(-1, -2));
-                layoutParams.setMargins(0, n, 0, 0);
-                linearLayout.setLayoutParams((android.view.ViewGroup$LayoutParams)layoutParams);
+        fieldInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListView.smoothScrollToPosition(0);
+                int titleHeight = header.getHeight();
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                layoutParams.setMargins(0, titleHeight, 0, 0);
+                linearLayout.setLayoutParams(layoutParams);
                 linearLayout.requestLayout();
-                ActivityOrder activityOrder = this.this$0;
-                ActivityOrder.access$102(activityOrder, true ^ ActivityOrder.access$100(activityOrder));
-                if (ActivityOrder.access$100(this.this$0)) {
-                    this.val$tvInfo.setText((CharSequence)"\ud835\udc8a");
-                    ActivityOrder.access$000(this.this$0).setVisibility(0);
-                    linearLayout.setVisibility(4);
+
+                if (!mListVisibility) {
+                    mListVisibility = true;
+                    linearLayout.setVisibility(View.INVISIBLE);
+                    mListView.setVisibility(View.VISIBLE);
+                    fieldInfo.setText("\ud835\udf9d");
                     return;
                 }
-                this.val$tvInfo.setText((CharSequence)"\ud835\udf9d");
-                ActivityOrder.access$000(this.this$0).setVisibility(4);
-                linearLayout.setVisibility(0);
+                mListVisibility = false;
+                fieldInfo.setText("\ud835\udc8a");
+                linearLayout.setVisibility(View.VISIBLE);
+                mListView.setVisibility(View.INVISIBLE);
+
             }
         });
-        */
+
+
+        //!!!!! поправить !
+        TextView bayerName = this.findViewById(R.id.bayer_name);
+        bayerName.setText(orderInfoData.get("firstname") + " " + orderInfoData.get("lastname"));
+        ((TextView) this.findViewById(R.id.bayer_phone)).setText(orderInfoData.get("phone"));
+        ((TextView) this.findViewById(R.id.bayer_email)).setText(orderInfoData.get("email"));
+        ((TextView) this.findViewById(R.id.bayer_city)).setText(orderInfoData.get("city"));
+        ((TextView) this.findViewById(R.id.bayer_address)).setText(orderInfoData.get("address"));
+        ((TextView) this.findViewById(R.id.bayer_payment)).setText(orderInfoData.get("payment"));
+        ((TextView) this.findViewById(R.id.bayer_shipping)).setText(orderInfoData.get("shipping"));
+
     }
 
 }

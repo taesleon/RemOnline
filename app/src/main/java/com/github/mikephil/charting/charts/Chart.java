@@ -1300,7 +1300,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     public static final int PAINT_GRID_BACKGROUND = 4;
 
     /**
-     * paint for the info text that is displayed when there are no values in the
+     * paint for the order_info text that is displayed when there are no values in the
      * chart
      */
     public static final int PAINT_INFO = 7;

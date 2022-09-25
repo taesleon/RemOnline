@@ -1,18 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/order_info_layout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    tools:visibility="invisible">
 
 
     <TextView
         android:id="@+id/bayer_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:drawableLeft="@drawable/person24px"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="25dp"
+        android:text="" />
+    <TextView
+        android:id="@+id/bayer_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/call24px"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="25dp"
+        android:text="" />
+    <TextView
+        android:id="@+id/bayer_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/mail24px"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="25dp"
+        android:text="" />
+    <TextView
+        android:id="@+id/bayer_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/location_city24px"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="25dp"
+        android:text="" />
+    <TextView
+        android:id="@+id/bayer_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/map24px"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="25dp"
+        android:text="" />
+    <TextView
+        android:id="@+id/bayer_payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/payments24px"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="25dp"
+        android:text="" />
+    <TextView
+        android:id="@+id/bayer_shipping"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/local_shipping24px"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="25dp"
+        android:text="" />
 </LinearLayout>

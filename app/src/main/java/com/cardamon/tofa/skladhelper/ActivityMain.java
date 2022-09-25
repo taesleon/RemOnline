@@ -50,6 +50,7 @@ import java.util.concurrent.Executors;
 import java.io.InputStream;
 
 public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BrokenRequest {
+
     //меню выбора дат
     private OwnFabMenu mFabMenu;
     //кнопка меню выбора дат
@@ -72,6 +73,7 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
         MyApplication.ACTIVITY = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 //рудимент от моего склада
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
