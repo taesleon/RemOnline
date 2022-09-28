@@ -1027,4 +1027,38 @@ public class DbHelper extends SQLiteOpenHelper {
         String sql = "SELECT O.*, SUM(R.total) AS full_sum, SUM(R.stock*R.price) AS real_sum  FROM orders AS O LEFT JOIN order_rows AS R ON R.order_id=O.order_id AND O.store_name=R.store_prefix WHERE O.date_added BETWEEN ? AND ? GROUP BY O.order_id ORDER BY date_added DESC";
         return db.rawQuery(sql, new String[]{date1 + "", date2 + ""});
     }
+
+    public ArrayList<ArrayList<HashMap<String, String>>> getOwnerSums(long date1, long date2) {
+        ArrayList res = new ArrayList();
+        SQLiteDatabase sQLiteDatabase = MyApplication.getSqlDataBase();
+        Cursor cursor = sQLiteDatabase.rawQuery("SELECT owner FROM groupe WHERE owner NOT NULL AND owner<>'' GROUP BY owner", null);
+        while (cursor.moveToNext()) {
+            ArrayList semiRes = new ArrayList();
+            String sql = "SELECT E.name AS grp, ROUND(SUM(R.price*R.qnt*(100-R.discount)/10000),0) full_sum, SUM(CASE WHEN T.cash>0 THEN ROUND((R.price*R.qnt*(100-R.discount)/10000),0) ELSE 0 END) AS cash, SUM(CASE WHEN T.none_cash>0 THEN ROUND((R.price*R.qnt*(100-R.discount)/10000),0) ELSE 0 END) AS none_cash FROM retail_rows AS R LEFT JOIN retail T ON T.uuid=R.retail_id LEFT JOIN good G ON G.uuid=R.good_id LEFT JOIN groupe E ON E.uuid=G.group_id WHERE E.uuid IN(SELECT uuid FROM groupe WHERE owner='";
+            sql +=cursor.getString(0);
+            sql +="') AND T.date BETWEEN ? AND ? GROUP BY grp ORDER BY E.name";
+            Log.d("mimi", sql);
+            Log.d("mimi", date1+"");
+            Log.d("mimi", date2+"");
+
+            Cursor cursor2 = sQLiteDatabase.rawQuery(sql,new String[]{date1+"", date2+""});
+            while (cursor2.moveToNext()) {
+                HashMap hashMap = new HashMap();
+                hashMap.put("name", cursor2.getString(0));
+                Log.d("mimi", cursor2.getString(0));
+                hashMap.put("sum", cursor2.getString(1));
+                Log.d("mimi", cursor2.getString(1));
+                hashMap.put("cash", cursor2.getString(2));
+                Log.d("mimi", cursor2.getString(2));
+                hashMap.put("none_cash", cursor2.getString(3));
+                Log.d("mimi", cursor2.getString(3));
+                res.add(hashMap);
+            }
+            cursor2.close();
+            res.add(semiRes);
+        }
+        cursor.close();
+        sQLiteDatabase.close();
+        return res;
+    }
 }

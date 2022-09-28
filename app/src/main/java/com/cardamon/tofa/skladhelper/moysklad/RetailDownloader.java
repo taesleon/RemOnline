@@ -74,29 +74,27 @@ public class RetailDownloader extends Downloader {
                 double docSum = 0;
 
                 for (int j = 0; j < docPositions.length(); j++) {
+                    int amount = docPositions.getJSONObject(j).getInt("amount");
+                    double priceIncludeDiscount = docPositions.getJSONObject(j).getDouble("price");
+                    double discount = docPositions.getJSONObject(j).getDouble("discount_value");
+                    double price = priceIncludeDiscount + discount/amount;
+
                     String[] data1 = new String[5];
                     //id накладной
                     data1[0] = data[0];
                     //количество
-                    data1[1] = docPositions.getJSONObject(j).getString("amount");
-
-
-                    double discount = docPositions.getJSONObject(j).getDouble("discount_value");
-                    double price = docPositions.getJSONObject(j).getDouble("price");
-
+                    data1[1] = amount+"";
                     //цена
-                    data1[2] = price * 100 + "";
+                    data1[2] = price*100+"";
                     //артикул
                     data1[4] = docPositions.getJSONObject(j).getString("article");
-
-                    docSum += Double.parseDouble(data1[1]) * Double.parseDouble(data1[2]);
+                    docSum += priceIncludeDiscount*amount;
 
                     //скидка
-
-                    data1[3] = 100 * discount/(discount+price) + "";
+                    data1[3] = (100 * (discount/amount)) / price + "";
                     allExpandedRows.add(data1);
                 }
-                data[4] = docSum + "";
+                data[4] = docSum*100 + "";
 
                 allRows.add(data);
                 mCount--;

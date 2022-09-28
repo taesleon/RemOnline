@@ -2,6 +2,7 @@ package com.cardamon.tofa.skladhelper.moysklad;
 
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.cardamon.tofa.skladhelper.FragmentRetail;
 import com.cardamon.tofa.skladhelper.MyApplication;

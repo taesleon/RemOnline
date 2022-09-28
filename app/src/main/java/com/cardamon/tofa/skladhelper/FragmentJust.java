@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,6 +103,8 @@ public class FragmentJust extends Fragment implements DateSetObserver {
         long date1 = MyApplication.ACTIVITY.getFabMenu().getLeftDateForServer();
         long date2 = MyApplication.ACTIVITY.getFabMenu().getRightDateServer();
         DbHelper db = new DbHelper();
+
+        ArrayList<ArrayList<HashMap<String, String>>> arrayList = db.getOwnerSums(date1, date2);
 
         double sum = db.getDemandSum(date1, date2, "");
         double[] sums = db.getRetailSum(date1, date2, "");
