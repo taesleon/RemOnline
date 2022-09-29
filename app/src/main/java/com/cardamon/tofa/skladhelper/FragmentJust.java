@@ -47,6 +47,7 @@ public class FragmentJust extends Fragment implements DateSetObserver {
     private BarChart mChart1;
     private ArrayList<HashMap<String, String>> mAsSums;
     private ArrayList<HashMap<String, String>> mBvSums;
+    private ArrayList<ArrayList<HashMap<String, String>>> mOwnersSums;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,10 +102,10 @@ public class FragmentJust extends Fragment implements DateSetObserver {
         long date2 = MyApplication.ACTIVITY.getFabMenu().getRightDateServer();
         DbHelper db = new DbHelper();
 
-        ArrayList<ArrayList<HashMap<String, String>>> ownerSums = db.getOwnerSums(date1, date2);
-        if (ownerSums.size() > 0) {
-            //mAsSums = ownerSums.get(0);
-            //mBvSums = ownerSums.get(1);
+        mOwnersSums = db.getOwnerSums(date1, date2);
+        if (mOwnersSums.size() > 0) {
+            mAsSums = mOwnersSums.get(0);
+            mBvSums = mOwnersSums.get(1);
         }
 
         double sum = db.getDemandSum(date1, date2, "");

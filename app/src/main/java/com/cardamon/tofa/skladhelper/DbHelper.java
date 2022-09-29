@@ -1061,7 +1061,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 hashMap.put("sum", cursor2.getString(1));
                 hashMap.put("cash", cursor2.getString(2));
                 hashMap.put("none_cash", cursor2.getString(3));
-                res.add(hashMap);
+                semiRes.add(hashMap);
             }
             cursor2.close();
             res.add(semiRes);
