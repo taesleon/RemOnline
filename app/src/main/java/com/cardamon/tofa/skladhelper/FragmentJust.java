@@ -45,6 +45,8 @@ public class FragmentJust extends Fragment implements DateSetObserver {
     protected TextView mNoneCashSum;
     private BarChart mChart;
     private BarChart mChart1;
+    private ArrayList<HashMap<String, String>> mAsSums;
+    private ArrayList<HashMap<String, String>> mBvSums;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,14 +82,9 @@ public class FragmentJust extends Fragment implements DateSetObserver {
         setupChart2();
         update();
 
-
         DbHelper db = new DbHelper();
-
-
         TextView forecast = view.findViewById(R.id.forecast);
         forecast.setText("Прогноз на сегодня: "+DateHelper.convertDoubleToString(db.getForecast()*1.1));
-
-
 
     }
 
@@ -104,7 +101,11 @@ public class FragmentJust extends Fragment implements DateSetObserver {
         long date2 = MyApplication.ACTIVITY.getFabMenu().getRightDateServer();
         DbHelper db = new DbHelper();
 
-        ArrayList<ArrayList<HashMap<String, String>>> arrayList = db.getOwnerSums(date1, date2);
+        ArrayList<ArrayList<HashMap<String, String>>> ownerSums = db.getOwnerSums(date1, date2);
+        if (ownerSums.size() > 0) {
+            //mAsSums = ownerSums.get(0);
+            //mBvSums = ownerSums.get(1);
+        }
 
         double sum = db.getDemandSum(date1, date2, "");
         double[] sums = db.getRetailSum(date1, date2, "");

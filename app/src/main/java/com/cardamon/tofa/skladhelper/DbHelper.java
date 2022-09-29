@@ -584,24 +584,40 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public LinkedHashMap<String, Double> getSalesByGroupe(long d1, long d2) {
         SQLiteDatabase db = MyApplication.getSqlDataBase();
-        String request = "SELECT substr(name ,0, 30) name, SUM(amount) as s FROM(\n" +
-                "\tSELECT G.name, SUM(W.price*W.qnt*(100-W.discount)/100)/100 AS amount FROM groupe G\n" +
-                "\tINNER JOIN retail_rows W ON W.good_id=D.uuid\n" +
-                "\tINNER JOIN good D ON D.group_id=G.uuid\n" +
-                "\tINNER JOIN retail T ON T.uuid=W.retail_id\n" +
-                "\tWHERE T.date BETWEEN ? AND ?\n" +
-                "\tGROUP BY 1\n" +
-                "\tUNION ALL\n" +
-                "\tSELECT G.name, SUM(W.price*W.qnt*(100-W.discount)/100)/100 AS amount FROM groupe G\n" +
-                "\tINNER JOIN demand_rows W ON W.good_id=D.uuid\n" +
-                "\tINNER JOIN good D ON D.group_id=G.uuid\n" +
-                "\tINNER JOIN demand T ON T.uuid=W.demand_id\n" +
-                "\tWHERE T.date BETWEEN ? AND ?\n" +
-                "\tGROUP BY 1\n" +
-                ")\n" +
-                "\n" +
-                "GROUP BY 1\n" +
-                "ORDER BY s ASC\n";
+        String request = "SELECT\n" +
+                "   substr(name , 0, 30) name,\n" +
+                "   SUM(amount) as s \n" +
+                "FROM\n" +
+                "   (\n" +
+                "      SELECT G.name,\n" +
+                "      SUM(W.price*W.qnt*(100 - W.discount) / 100) / 100 AS amount \n" +
+                "   FROM\n" +
+                "      groupe G\n" +
+                "\t  INNER JOIN retail_rows W \n" +
+                "      ON W.good_id = D.uuid\n" +
+                "\t  INNER JOIN good D \n" +
+                "      ON D.group_id = G.uuid\n" +
+                "\t  INNER JOIN retail T \n" +
+                "      ON T.uuid = W.retail_id\n" +
+                "\t  WHERE T.date BETWEEN ? AND ? \n" +
+                "\t  GROUP BY 1\n" +
+                "\t  UNION ALL\n" +
+                "\t  SELECT G.name,\n" +
+                "      SUM(W.price*W.qnt*(100 - W.discount) / 100) / 100 AS amount \n" +
+                "   FROM\n" +
+                "      groupe G\n" +
+                "\t  INNER JOIN demand_rows W \n" +
+                "      ON W.good_id = D.uuid\n" +
+                "\t  INNER JOIN good D \n" +
+                "      ON D.group_id = G.uuid\n" +
+                "\t  INNER JOIN demand T \n" +
+                "      ON T.uuid = W.demand_id\n" +
+                "\t  WHERE T.agent_id = '24748071'\n" +
+                "\t  AND T.date BETWEEN ? AND ? \n" +
+                "\t  GROUP BY 1\n" +
+                "   )\n" +
+                "   GROUP BY 1\n" +
+                "   ORDER BY s ASC";
         //"LIMIT 3";
         Cursor cursor = db.rawQuery(request, new String[]{d1 + "", d2 + "", d1 + "", d2 + ""});
 
@@ -1037,21 +1053,14 @@ public class DbHelper extends SQLiteOpenHelper {
             String sql = "SELECT E.name AS grp, ROUND(SUM(R.price*R.qnt*(100-R.discount)/10000),0) full_sum, SUM(CASE WHEN T.cash>0 THEN ROUND((R.price*R.qnt*(100-R.discount)/10000),0) ELSE 0 END) AS cash, SUM(CASE WHEN T.none_cash>0 THEN ROUND((R.price*R.qnt*(100-R.discount)/10000),0) ELSE 0 END) AS none_cash FROM retail_rows AS R LEFT JOIN retail T ON T.uuid=R.retail_id LEFT JOIN good G ON G.uuid=R.good_id LEFT JOIN groupe E ON E.uuid=G.group_id WHERE E.uuid IN(SELECT uuid FROM groupe WHERE owner='";
             sql +=cursor.getString(0);
             sql +="') AND T.date BETWEEN ? AND ? GROUP BY grp ORDER BY E.name";
-            Log.d("mimi", sql);
-            Log.d("mimi", date1+"");
-            Log.d("mimi", date2+"");
 
             Cursor cursor2 = sQLiteDatabase.rawQuery(sql,new String[]{date1+"", date2+""});
             while (cursor2.moveToNext()) {
                 HashMap hashMap = new HashMap();
                 hashMap.put("name", cursor2.getString(0));
-                Log.d("mimi", cursor2.getString(0));
                 hashMap.put("sum", cursor2.getString(1));
-                Log.d("mimi", cursor2.getString(1));
                 hashMap.put("cash", cursor2.getString(2));
-                Log.d("mimi", cursor2.getString(2));
                 hashMap.put("none_cash", cursor2.getString(3));
-                Log.d("mimi", cursor2.getString(3));
                 res.add(hashMap);
             }
             cursor2.close();
