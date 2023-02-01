@@ -4,7 +4,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -51,7 +50,7 @@ public class ActivityOrder extends AppCompatActivity {
         linearLayout.setVisibility(View.INVISIBLE);
 
         ((TextView) this.findViewById(R.id.description)).setText(this.getIntent().getStringExtra("description"));
-        ((TextView) this.findViewById(R.id.date)).setText(this.getIntent().getStringExtra("date"));
+        ((TextView) this.findViewById(R.id.date1)).setText(this.getIntent().getStringExtra("date"));
         ((TextView) this.findViewById(R.id.groupName)).setText(this.getIntent().getStringExtra("name"));
         ((TextView) this.findViewById(R.id.sum)).setText(this.getIntent().getStringExtra("sum"));
         ((TextView) this.findViewById(R.id.cash)).setText(this.getIntent().getStringExtra("cash"));

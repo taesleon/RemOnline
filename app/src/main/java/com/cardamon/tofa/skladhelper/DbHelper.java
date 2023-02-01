@@ -1051,16 +1051,26 @@ public class DbHelper extends SQLiteOpenHelper {
         while (cursor.moveToNext()) {
             ArrayList semiRes = new ArrayList();
             String sql = "SELECT E.name AS grp, ROUND(SUM(R.price*R.qnt*(100-R.discount)/10000),0) full_sum, SUM(CASE WHEN T.cash>0 THEN ROUND((R.price*R.qnt*(100-R.discount)/10000),0) ELSE 0 END) AS cash, SUM(CASE WHEN T.none_cash>0 THEN ROUND((R.price*R.qnt*(100-R.discount)/10000),0) ELSE 0 END) AS none_cash FROM retail_rows AS R LEFT JOIN retail T ON T.uuid=R.retail_id LEFT JOIN good G ON G.uuid=R.good_id LEFT JOIN groupe E ON E.uuid=G.group_id WHERE E.uuid IN(SELECT uuid FROM groupe WHERE owner='";
-            sql +=cursor.getString(0);
-            sql +="') AND T.date BETWEEN ? AND ? GROUP BY grp ORDER BY E.name";
+            sql += cursor.getString(0);
+            sql += "') AND T.date BETWEEN ? AND ? GROUP BY grp ORDER BY E.name";
 
-            Cursor cursor2 = sQLiteDatabase.rawQuery(sql,new String[]{date1+"", date2+""});
+            Cursor cursor2 = sQLiteDatabase.rawQuery(sql, new String[]{date1 + "", date2 + ""});
             while (cursor2.moveToNext()) {
                 HashMap hashMap = new HashMap();
                 hashMap.put("name", cursor2.getString(0));
                 hashMap.put("sum", cursor2.getString(1));
                 hashMap.put("cash", cursor2.getString(2));
                 hashMap.put("none_cash", cursor2.getString(3));
+
+                hashMap.put("tax_cash", "0.96");
+                hashMap.put("tax_bank", "0.93");
+
+                if (cursor2.getString(0).equals("Woll")) {
+                    hashMap.put("tax_cash", "0.7");
+                    hashMap.put("tax_bank", "0.7");
+
+                }
+
                 semiRes.add(hashMap);
             }
             cursor2.close();
@@ -1070,4 +1080,131 @@ public class DbHelper extends SQLiteOpenHelper {
         sQLiteDatabase.close();
         return res;
     }
+
+    public ArrayList<HashMap<String, String>> getRetailRowsFiltredByGroupes(long dateFrom, long dateTo, String prefix) {
+        SQLiteDatabase sQLiteDatabase = MyApplication.getSqlDataBase();
+        ArrayList resultArray = new ArrayList();
+        Cursor cursor = sQLiteDatabase.rawQuery("SELECT W.qnt, W.price, W.discount, G.name, G.code, GR.name, C.color_id AS group_color, R.name AS num, R.cash-R.none_cash, R.date FROM retail_rows AS W \nLEFT JOIN good AS G ON W.good_id=G.uuid \nINNER JOIN groupe AS GR ON G.group_id=GR.uuid \nINNER JOIN retail R ON R.uuid=W.retail_id \nINNER JOIN colors AS C ON C.object_id=GR.uuid WHERE (R.date BETWEEN ? AND ?)\nAND GR.uuid IN(SELECT uuid FROM groupe WHERE owner=?) ORDER BY R.date DESC", new String[]{dateFrom+"", dateTo+"", prefix});
+        HashMap hashMap = new HashMap();
+        while (cursor.moveToNext()) {
+            StringBuilder stringBuilder3 = new StringBuilder();
+            stringBuilder3.append(cursor.getInt(0));
+            stringBuilder3.append(" X ");
+            stringBuilder3.append((100.0f - cursor.getFloat(2)) / 100.0f * cursor.getFloat(1) / 100.0f);
+            stringBuilder3.append(" = ");
+            String string3 = stringBuilder3.toString();
+            float f = (float)cursor.getInt(0) * cursor.getFloat(1) / 100.0f * (100.0f - cursor.getFloat(2)) / 100.0f;
+            StringBuilder stringBuilder4 = new StringBuilder();
+            stringBuilder4.append(string3);
+            stringBuilder4.append(f);
+            hashMap.put("bv_sum", f+"");
+            hashMap.put((Object)"line", (Object)stringBuilder4.toString());
+            if (cursor.getInt(2) > 0) {
+                StringBuilder stringBuilder5 = new StringBuilder();
+                stringBuilder5.append("-");
+                stringBuilder5.append(cursor.getInt(2));
+                stringBuilder5.append("%");
+                hashMap.put((Object)"discount", (Object)stringBuilder5.toString());
+            } else {
+                hashMap.put((Object)"discount", (Object)"");
+            }
+            hashMap.put((Object)"name", (Object)cursor.getString(3));
+            hashMap.put((Object)"code", (Object)cursor.getString(4));
+            hashMap.put((Object)"group_name", (Object)cursor.getString(5));
+            hashMap.put((Object)"group_color", (Object)cursor.getString(6));
+            hashMap.put((Object)"retail_name", (Object)cursor.getString(7));
+            hashMap.put((Object)"cash_none_cash", (Object)cursor.getString(8));
+            hashMap.put((Object)"date", (Object)cursor.getString(9));
+            StringBuilder stringBuilder6 = new StringBuilder();
+            stringBuilder6.append(f);
+            stringBuilder6.append("");
+            hashMap.put((Object)"sum", (Object)stringBuilder6.toString());
+            resultArray.add((Object)hashMap);
+            hashMap = new HashMap();
+        }
+        cursor.close();
+        sQLiteDatabase.close();
+        return resultArray;
+    }
 }
+
+/* выборка по группе zassenhaus первая дата -> ноябрь 2020 начало поставок кухни
+SELECT
+   G.code,
+   G.name,
+   SUM(W.qnt) AS qnt,
+   ROUND(SUM(W.qnt * W.price*(100 - W.discount) / 100) / 100, 0) AS amount
+FROM
+   retail_rows AS W
+   LEFT JOIN
+      good AS G
+      ON W.good_id = G.uuid
+   INNER JOIN
+      groupe AS GR
+      ON G.group_id = GR.uuid
+   INNER JOIN
+      retail R
+      ON R.uuid = W.retail_id
+   INNER JOIN
+      colors AS C
+      ON C.object_id = GR.uuid
+WHERE
+   (
+      R.date BETWEEN 1671667300000 AND 1673827180000
+   )
+   AND GR.uuid IN
+   (
+      SELECT
+         uuid
+      FROM
+         groupe
+      WHERE
+         owner = 'bv'
+         AND uuid = 699712
+   )
+GROUP BY
+   W.good_id
+* */
+
+/*
+SELECT
+   R.name,
+   G.code,
+   G.name,
+   SUM(W.qnt) AS qnt,
+   ROUND(SUM(W.qnt * W.price*(100 - W.discount) / 100) / 100, 0) AS amount,
+   CASE WHEN R.cash > 0
+        THEN 'cash'
+        ELSE 'bank'
+        END AS payment,
+   R.date
+FROM
+   retail_rows AS W
+   LEFT JOIN
+      good AS G
+      ON W.good_id = G.uuid
+   INNER JOIN
+      groupe AS GR
+      ON G.group_id = GR.uuid
+   INNER JOIN
+      retail R
+      ON R.uuid = W.retail_id
+   INNER JOIN
+      colors AS C
+      ON C.object_id = GR.uuid
+WHERE
+   (
+      R.date BETWEEN 1671667300000 AND 1673827180000
+   )
+   AND GR.uuid IN
+   (
+      SELECT
+         uuid
+      FROM
+         groupe
+      WHERE
+         owner = 'bv'
+   )
+GROUP BY
+   W.good_id, R.name
+* */

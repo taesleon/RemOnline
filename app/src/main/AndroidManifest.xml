@@ -43,6 +43,7 @@
         <activity android:name=".ActLibAgent"></activity>
         <activity android:name=".ActLibGood"></activity>
         <activity android:name=".ActivityOrder" ></activity>
+        <activity android:name=".balance.BalanceBv" ></activity>
 
     </application>
 

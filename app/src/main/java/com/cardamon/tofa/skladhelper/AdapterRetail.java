@@ -36,7 +36,7 @@ public class AdapterRetail extends CursorAdapter {
         ((TextView) view.findViewById(R.id.none_cash)).setText(DateHelper.convertDoubleToString(cursor.getDouble(cursor.getColumnIndex(Model.Retail.NONE_CASH)) / 100 ));
         ((TextView) view.findViewById(R.id.colorid)).setText(cursor.getString(cursor.getColumnIndex("store_color")));
 
-        ((TextView) view.findViewById(R.id.date)).setText(DateHelper.convertMillisToDate(cursor.getLong(cursor.getColumnIndex(Model.Retail.DATE))));
+        ((TextView) view.findViewById(R.id.date1)).setText(DateHelper.convertMillisToDate(cursor.getLong(cursor.getColumnIndex(Model.Retail.DATE))));
         ((TextView) view.findViewById(R.id.description)).setText(cursor.getString(cursor.getColumnIndex(Model.Retail.DESCRIPTION)));
         ((TextView) view.findViewById(R.id.agent_name)).setText(cursor.getString(cursor.getColumnIndex("buyer")));
 

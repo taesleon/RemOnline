@@ -17,7 +17,7 @@ public class AdapterOrder extends CursorAdapter {
 
     public void bindView(View view, Context context, Cursor cursor) {
         ((TextView) view.findViewById(R.id.uuid)).setText(cursor.getString(cursor.getColumnIndex("order_id")));
-        ((TextView) view.findViewById(R.id.date)).setText(DateHelper.convertMillisToDate(cursor.getLong(cursor.getColumnIndex("date_added"))));
+        ((TextView) view.findViewById(R.id.date1)).setText(DateHelper.convertMillisToDate(cursor.getLong(cursor.getColumnIndex("date_added"))));
         ((TextView) view.findViewById(R.id.sum)).setText(DateHelper.convertDoubleToString(cursor.getDouble(cursor.getColumnIndex("full_sum"))));
         TextView storeField = view.findViewById(R.id.groupName);
         String storePrefix = cursor.getString(cursor.getColumnIndex("store_name"));

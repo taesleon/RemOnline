@@ -44,7 +44,7 @@
         android:textSize="@dimen/textSizeSmall" />
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/date1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="false"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/date"
+        android:layout_below="@+id/date1"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="10dp"
         android:text="number" />

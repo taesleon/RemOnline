@@ -18,8 +18,8 @@
             android:id="@+id/sum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="12dp"
             android:drawableLeft="@drawable/ic_cash_multiple"
             android:drawablePadding="@dimen/marginLeftFragment"
@@ -38,8 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/sum"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="13dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginEnd="13dp"
             android:layout_marginRight="15dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:gravity="center_vertical|center_horizontal"
@@ -62,9 +62,9 @@
                 android:drawableLeft="@drawable/ic_credit_card"
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
-                android:paddingBottom="15dp"
-                android:paddingRight="15dp"
                 android:paddingTop="15dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="15dp"
                 android:text="none_cash"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textSizeNormal" />
@@ -102,10 +102,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|center_horizontal"
-                android:paddingBottom="20dp"
                 android:paddingTop="20dp"
+                android:paddingBottom="20dp"
                 android:text="ПО ГРУППАМ + 3 ЛИДЕРА"
                 android:textColor="@color/black" />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/info_as"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:drawableLeft="@drawable/question_owner"
+                    android:gravity="center_vertical"
+                    android:text="as"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/info_bv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:drawableRight="@drawable/question_owner"
+                    android:gravity="center_vertical"
+                    android:text="bv"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/info_as"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/info_as" />
+            </android.support.constraint.ConstraintLayout>
 
             <com.github.mikephil.charting.charts.HorizontalBarChart
                 android:id="@+id/chart1"
@@ -126,8 +159,8 @@
                     android:layout_marginStart="15dp"
                     android:padding="10dp"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
                     android:paddingTop="10dp"
+                    android:paddingRight="10dp"
                     app:layout_constraintBottom_toBottomOf="@+id/year_vs_year"
                     app:layout_constraintStart_toStartOf="@+id/year_vs_year"
                     app:srcCompat="@drawable/ic_alert_box" />
@@ -156,8 +189,8 @@
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="30dp"
                 android:gravity="center_vertical"
-                android:paddingBottom="20dp"
                 android:paddingTop="20dp"
+                android:paddingBottom="20dp"
                 android:text="forecast"
                 android:textColor="#311B92" />
         </LinearLayout>

@@ -1,5 +1,6 @@
 package com.cardamon.tofa.skladhelper;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +25,7 @@ import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cardamon.tofa.skladhelper.balance.BalanceBv;
 import com.cardamon.tofa.skladhelper.moysklad.AgentDownloader;
 import com.cardamon.tofa.skladhelper.moysklad.BrokenRequest;
 import com.cardamon.tofa.skladhelper.moysklad.CashBoxDownloader;
@@ -321,6 +324,10 @@ public class ActivityMain extends AppCompatActivity implements NavigationView.On
                         .contentGravity(GravityEnum.CENTER)
                         .positiveColor(ContextCompat.getColor(this, R.color.dialog_positive_btn))
                         .show();
+                break;
+            case R.id.bv_balance:
+                this.startActivity(new Intent((Context)this, BalanceBv.class));
+                break;
 
         }
         mNavigationDrawer.closeDrawers();

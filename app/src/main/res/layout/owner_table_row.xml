@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/owner_table_row_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="CI"
+        android:textAllCaps="true"
+        android:textColor="#444"
+        android:textSize="16dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/owner_table_row_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_cash_multiple_dark"
+        android:drawablePadding="2dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        android:textColor="#444"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/owner_table_row_cash"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/owner_table_row_cash" />
+
+    <TextView
+        android:id="@+id/owner_table_row_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:drawableLeft="@drawable/ic_cash_usd_dark"
+        android:drawablePadding="2dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        android:textColor="#444"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/owner_table_row_brand" />
+
+    <TextView
+        android:id="@+id/owner_table_row_bank"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:drawableLeft="@drawable/ic_credit_card_dark"
+        android:drawablePadding="2dp"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        android:textColor="#444"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/owner_table_row_cash"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/owner_table_row_cash" />
+
+    <TextView
+        android:id="@+id/owner_table_row_cash_without"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+
+        android:textColor="#444"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="@+id/owner_table_row_cash"
+        app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/owner_table_row_bank_without"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="250"
+        android:textColor="#444"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/owner_table_row_cash_without"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/owner_table_row_cash_without" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="- налоги"
+        android:textColor="#444"
+        android:textSize="14dp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/owner_table_row_sum"
+        app:layout_constraintTop_toBottomOf="@+id/owner_table_row_sum" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="сумма:"
+        android:textColor="#444"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toStartOf="@+id/owner_table_row_full"
+        app:layout_constraintTop_toTopOf="@+id/owner_table_row_full" />
+
+    <TextView
+        android:id="@+id/owner_table_row_full"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="350"
+        android:textColor="#444"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="@+id/owner_table_row_bank_without"
+        app:layout_constraintTop_toBottomOf="@+id/owner_table_row_bank_without" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#6B6B6B"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/owner_table_row_full" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33576643" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.666" />
+</android.support.constraint.ConstraintLayout>

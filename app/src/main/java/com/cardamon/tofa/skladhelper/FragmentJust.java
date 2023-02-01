@@ -1,18 +1,18 @@
 package com.cardamon.tofa.skladhelper;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,6 +28,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -45,9 +47,11 @@ public class FragmentJust extends Fragment implements DateSetObserver {
     protected TextView mNoneCashSum;
     private BarChart mChart;
     private BarChart mChart1;
-    private ArrayList<HashMap<String, String>> mAsSums;
-    private ArrayList<HashMap<String, String>> mBvSums;
+    private ArrayList<HashMap<String, String>> mAsSums = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> mBvSums = new ArrayList<>();
     private ArrayList<ArrayList<HashMap<String, String>>> mOwnersSums;
+    private TextView bvQuestionTview, asQuestionTview;
+    private String bvQuestion, asQuestion;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,18 +89,17 @@ public class FragmentJust extends Fragment implements DateSetObserver {
 
         DbHelper db = new DbHelper();
         TextView forecast = view.findViewById(R.id.forecast);
-        forecast.setText("Прогноз на сегодня: "+DateHelper.convertDoubleToString(db.getForecast()*1.1));
+        forecast.setText("Прогноз на сегодня: " + DateHelper.convertDoubleToString(db.getForecast() * 1.1));
+
+        bvQuestionTview = view.findViewById(R.id.info_bv);
+        asQuestionTview = view.findViewById(R.id.info_as);
 
     }
 
 
     public void update() {
-        if(MyApplication.ACTIVITY==null || getView()==null)
+        if (MyApplication.ACTIVITY == null || getView() == null)
             return;
-
-        updateChart1();
-        updateChart2();
-
 
         long date1 = MyApplication.ACTIVITY.getFabMenu().getLeftDateForServer();
         long date2 = MyApplication.ACTIVITY.getFabMenu().getRightDateServer();
@@ -107,6 +110,9 @@ public class FragmentJust extends Fragment implements DateSetObserver {
             mAsSums = mOwnersSums.get(0);
             mBvSums = mOwnersSums.get(1);
         }
+
+        updateChart1();
+        updateChart2();
 
         double sum = db.getDemandSum(date1, date2, "");
         double[] sums = db.getRetailSum(date1, date2, "");
@@ -225,6 +231,8 @@ public class FragmentJust extends Fragment implements DateSetObserver {
                         .show();
             }
         });
+        setOnClickOwnerButton(getView().findViewById(R.id.info_as));
+        setOnClickOwnerButton(getView().findViewById(R.id.info_bv));
     }
 
     private void setupChart2() {
@@ -279,7 +287,7 @@ public class FragmentJust extends Fragment implements DateSetObserver {
 
         String[] monthNames = {"январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"};
 
-        dataSet.add(new Data(0f, mins[0], dayNames[day-1]));
+        dataSet.add(new Data(0f, mins[0], dayNames[day - 1]));
         dataSet.add(new Data(1f, mins[1], week + " неделя"));
         dataSet.add(new Data(2f, mins[2], monthNames[month]));
         dataSet.add(new Data(3f, mins[3], "год"));
@@ -309,19 +317,20 @@ public class FragmentJust extends Fragment implements DateSetObserver {
         mChart.animateY(1000);
 
 
-
-
-
-
-
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void updateChart2() {
 
-        new AsyncTask<Void, Void, LinkedHashMap<String, Double>>(){
+        new AsyncTask<Void, Void, LinkedHashMap<String, Double>>() {
             @Override
             protected void onPostExecute(LinkedHashMap<String, Double> agents) {
                 super.onPostExecute(agents);
+
+                bvQuestionTview.setText(bvQuestion);
+                asQuestionTview.setText(asQuestion);
+
+
                 ArrayList<BarEntry> yVals = new ArrayList<>();
                 ArrayList<String> yTitles = new ArrayList<>();
                 int i = 0;
@@ -332,14 +341,14 @@ public class FragmentJust extends Fragment implements DateSetObserver {
                 }
                 HorizontalBarChart hbchart = getView().findViewById(R.id.chart1);
                 HorizontalBarChart.LayoutParams params = hbchart.getLayoutParams();
-                params.height = 120*yTitles.size();
+                params.height = 120 * yTitles.size();
                 hbchart.setLayoutParams(params);
 
                 XAxis xa = mChart1.getXAxis();
 
                 xa.setLabelCount(yTitles.size());
 
-                xa.mEntries=new float[]{};
+                xa.mEntries = new float[]{};
 
                 xa.setValueFormatter(new IAxisValueFormatter() {
                     @Override
@@ -371,7 +380,6 @@ public class FragmentJust extends Fragment implements DateSetObserver {
                 long date1 = MyApplication.ACTIVITY.getFabMenu().getLeftDateForServer();
                 long date2 = MyApplication.ACTIVITY.getFabMenu().getRightDateServer();
 
-
                 DbHelper db = new DbHelper();
                 LinkedHashMap<String, Double> groupes = db.getSalesByGroupe(date1, date2);
                 LinkedHashMap<String, Double> agents = db.getSalesByAgent(date1, date2);
@@ -379,15 +387,112 @@ public class FragmentJust extends Fragment implements DateSetObserver {
                 agents.putAll(goods);
                 agents.putAll(groupes);
 
+                double bvSum = 0, asSum = 0;
+                String bvTitle = "";
+                String asTitle = "";
+                if (mBvSums.size() > 0) {
+                    for (HashMap<String, String> hm : mBvSums) {
+                        bvSum += Double.parseDouble(hm.get("sum"));
+                        bvTitle = bvTitle + hm.get("name").substring(0, 2) + "+";
+                    }
+                }
+                if (mAsSums.size() > 0) {
+                    for (HashMap<String, String> hm : mAsSums) {
+                        asSum += Double.parseDouble(hm.get("sum"));
+                        asTitle = asTitle + hm.get("name").substring(0, 2) + "+";
+                    }
+                }
+
+                bvTitle = delLastChar(bvTitle);
+                asTitle = delLastChar(asTitle);
+
+                agents.put(bvTitle.toUpperCase(), bvSum);
+                agents.put(asTitle.toUpperCase(), asSum);
+
+                bvQuestion = bvTitle.toUpperCase();
+                asQuestion = asTitle.toUpperCase();
+
                 return agents;
 
             }
         }.execute();
+    }
 
+    private String delLastChar(String str) {
+        if (str != null && str.length() > 0 ) {
+            str = str.substring(0, str.length() - 1);
+        }
+        return str;
+    }
 
+    private void setOnClickOwnerButton(TextView textView) {
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long date1 = MyApplication.ACTIVITY.getFabMenu().getLeftDate();
+                long date2 = MyApplication.ACTIVITY.getFabMenu().getRightDate();
 
+                DecimalFormatSymbols decimalFormatSymbols = java.text.DecimalFormatSymbols.getInstance();
+                DecimalFormat decimalFormat = new java.text.DecimalFormat("###,###", decimalFormatSymbols);
+                decimalFormatSymbols.setGroupingSeparator(' ');
+                decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
 
+                LayoutInflater layoutInflater = LayoutInflater.from(MyApplication.getAppContext());
 
+                View mainView = layoutInflater.inflate(R.layout.owner_table, null);
+                LinearLayout content = mainView.findViewById(R.id.owner_content_table);
+
+                double sum = 0d;
+
+                TextView title = mainView.findViewById(R.id.owner_date_title);
+                title.setText(DateHelper.convertMillisToDateSimple(date1) + "   |   " + DateHelper.convertMillisToDateSimple(date2));
+
+                ArrayList<HashMap<String, String>> list = null;
+                switch (v.getId()) {
+                    case R.id.info_as:
+                        list = mAsSums;
+                        break;
+                    case R.id.info_bv:
+                        list = mBvSums;
+                }
+
+                for (HashMap hashMap : list) {
+                    View row = layoutInflater.inflate(R.layout.owner_table_row, null);
+                    double rowSum;
+                    double fullSum = Double.parseDouble(((String) hashMap.get("sum")));
+                    double cash = Double.parseDouble(((String) hashMap.get("cash")));
+                    double bank = Double.parseDouble(((String) hashMap.get("none_cash")));
+                    float tax_cash = Float.parseFloat(((String) hashMap.get("tax_cash")));
+                    float tax_bank = Float.parseFloat(((String) hashMap.get("tax_bank")));
+
+                    ((TextView) row.findViewById(R.id.owner_table_row_brand)).setText(hashMap.get("name").toString());
+                    ((TextView) row.findViewById(R.id.owner_table_row_sum)).setText(decimalFormat.format(fullSum));
+                    ((TextView) row.findViewById(R.id.owner_table_row_cash)).setText(decimalFormat.format(cash));
+                    ((TextView) row.findViewById(R.id.owner_table_row_bank)).setText(decimalFormat.format(bank));
+
+                    ((TextView) row.findViewById(R.id.owner_table_row_bank_without)).setText(decimalFormat.format(bank * tax_bank));
+                    ((TextView) row.findViewById(R.id.owner_table_row_cash_without)).setText(decimalFormat.format(cash * tax_cash));
+                    rowSum = bank * tax_bank + cash * tax_cash;
+
+                    if (hashMap.get("name").toString().equals("Woll")) {
+                        ((TextView) row.findViewById(R.id.owner_table_row_bank_without)).setText(decimalFormat.format(bank * tax_bank));
+                        ((TextView) row.findViewById(R.id.owner_table_row_cash_without)).setText(decimalFormat.format(cash * tax_cash));
+                        rowSum = fullSum * tax_bank;
+                    }
+                    ((TextView) row.findViewById(R.id.owner_table_row_full)).setText(decimalFormat.format(rowSum));
+                    sum += rowSum;
+                    content.addView(row);
+                }
+
+                ((TextView) mainView.findViewById(R.id.owner_full_sum)).setText(decimalFormat.format(sum));
+
+                MaterialDialog materialDialog = new MaterialDialog.Builder(getActivity())
+                        .customView(mainView, true)
+                        .negativeText("OK")
+                        .negativeColor(getResources().getColor(R.color.colorPrimaryDark))
+                        .show();
+            }
+        });
 
     }
 

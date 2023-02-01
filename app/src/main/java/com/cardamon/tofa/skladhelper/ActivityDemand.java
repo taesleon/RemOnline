@@ -57,7 +57,7 @@ public class ActivityDemand extends AppCompatActivity {
 
 
         ((TextView) findViewById(R.id.description)).setText(getIntent().getStringExtra("description"));
-        ((TextView) findViewById(R.id.date)).setText(getIntent().getStringExtra("date"));
+        ((TextView) findViewById(R.id.date1)).setText(getIntent().getStringExtra("date"));
         ((TextView) findViewById(R.id.groupName)).setText(getIntent().getStringExtra("name"));
         ((TextView) findViewById(R.id.sum)).setText(getIntent().getStringExtra("sum"));
         ((TextView) findViewById(R.id.cash)).setText(getIntent().getStringExtra("cash"));

@@ -265,8 +265,12 @@ public abstract class Downloader extends Thread implements JsonCatcher {
      */
 
     private void startAllThreads() {
-        mExecutorService = Executors.newFixedThreadPool(MyApplication.MAX_THREAD);
-        for (int i = 2; i <= 1 + mCount / 50; ++i) {
+         mExecutorService = Executors.newFixedThreadPool(MyApplication.MAX_THREAD);
+        int pageCount = (mCount - mCount%50)/50;
+        if(mCount % 50 > 0)
+            pageCount++;
+
+        for (int i = 2; i <= pageCount; ++i) {
             mRequestParams.setOffset(i);
             mExecutorService.execute(new GetJson(mBaseUrl, this, mRequestParams));
         }
@@ -421,6 +425,7 @@ public abstract class Downloader extends Thread implements JsonCatcher {
      */
     @SuppressLint("WrongConstant")
     private void errorToast(int code) {
+        Log.d("mimi", "finish filed");
         if (STILL_MODE)
             return;
 

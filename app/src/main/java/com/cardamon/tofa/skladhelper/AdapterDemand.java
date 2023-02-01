@@ -34,7 +34,7 @@ public class AdapterDemand extends CursorAdapter {
         ((TextView) view.findViewById(R.id.none_cash)).setText("");
         ((TextView) view.findViewById(R.id.colorid)).setText(cursor.getString(cursor.getColumnIndex("color")));
 
-        ((TextView) view.findViewById(R.id.date)).setText(DateHelper.convertMillisToDate(cursor.getLong(cursor.getColumnIndex("date"))));
+        ((TextView) view.findViewById(R.id.date1)).setText(DateHelper.convertMillisToDate(cursor.getLong(cursor.getColumnIndex("date"))));
         ((TextView) view.findViewById(R.id.description)).setText(cursor.getString(cursor.getColumnIndex("description")));
         ((TextView) view.findViewById(R.id.agent_name)).setText(cursor.getString(cursor.getColumnIndex("agent")));
 

@@ -11,6 +11,10 @@ import java.util.TimeZone;
  */
 
 public class DateHelper {
+    public static String convertMillisToDateSimple(long l) {
+        return new SimpleDateFormat("dd-MM-yyyy").format(l);
+    }
+
     public static long convertMSdateToLong(String date) {
         SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         parser.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
@@ -27,7 +31,9 @@ public class DateHelper {
     public static String convertDoubleToString(double d) {
         return String.format("%1$,.2f", d);
     }
-
+    public static String convertDoubleToStringNullDigit(double d) {
+        return String.format("%1$,.0f", d);
+    }
     /**
      * готовим даты для запроса к базе
      * начальная дата ставится 00 00 00

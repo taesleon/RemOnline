@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -16,16 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.cardamon.tofa.skladhelper.moysklad.DemandDownloader;
-import com.cardamon.tofa.skladhelper.moysklad.Downloader;
-import com.cardamon.tofa.skladhelper.moysklad.RetailDownloader;
-import com.crashlytics.android.Crashlytics;
-
-
-import java.util.List;
-
-import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by dima on 27.12.17.
@@ -66,7 +55,7 @@ public class FragmentDemand extends FragmentMy {
                 String uuid = ((TextView) view.findViewById(R.id.uuid)).getText().toString();
                 intent.putExtra("uuid", uuid);
                 intent.putExtra("description", ((TextView) view.findViewById(R.id.description)).getText());
-                intent.putExtra("date", ((TextView) view.findViewById(R.id.date)).getText());
+                intent.putExtra("date", ((TextView) view.findViewById(R.id.date1)).getText());
                 intent.putExtra("name", ((TextView) view.findViewById(R.id.groupName)).getText());
                 intent.putExtra("sum", ((TextView) view.findViewById(R.id.sum)).getText());
                 intent.putExtra("cash", ((TextView) view.findViewById(R.id.cash)).getText());

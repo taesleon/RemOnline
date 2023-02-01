@@ -10,7 +10,6 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.support.v4.app.LoaderManager;
 
@@ -63,7 +62,7 @@ public class FragmentOrder extends FragmentMy {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("uuid", ((TextView)view.findViewById(R.id.uuid)).getText().toString());
                     intent.putExtra("description", ((TextView)view.findViewById(R.id.description)).getText());
-                    intent.putExtra("date", ((TextView)view.findViewById(R.id.date)).getText());
+                    intent.putExtra("date", ((TextView)view.findViewById(R.id.date1)).getText());
                     intent.putExtra("name", ((TextView)view.findViewById(R.id.groupName)).getText());
                     intent.putExtra("sum", ((TextView)view.findViewById(R.id.sum)).getText());
                     intent.putExtra("cash", ((TextView)view.findViewById(R.id.cash)).getText());
